@@ -2,7 +2,10 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-
+// 引入移动端适配插件
+import 'lib-flexible'
+// 引入moment
+import Moment from 'moment'
 // 引入mint-ui
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
@@ -19,6 +22,11 @@ Vue.prototype.$axios = Axios
 
 // 使用mint-ui
 Vue.use(MintUI)
+
+// 定义moment插件为全局过滤器
+Vue.filter('covertTime', function (data, formatStr) {
+  return Moment(data).format(formatStr)
+})
 
 Vue.config.productionTip = false
 

@@ -1,0 +1,46 @@
+<template>
+   <div class="header_bar">
+    <span @click="goback" v-show="show">&lt;</span>
+    <mt-header :title="title"></mt-header>
+   </div>
+</template>
+
+<script>
+export default {
+  name: 'Header',
+  data () {
+    return {
+    }
+  },
+  props: ['title'],
+  computed: {
+    show () {
+      if (this.$route.name !== 'home') {
+        return true
+      }
+      return false
+    }
+  },
+  methods: {
+    goback () {
+      this.$router.go(-1)
+    }
+  },
+  created () {
+  }
+}
+</script>
+
+<style lang="less" scoped>
+.header_bar {
+  span {
+    position: absolute;
+    top: 6px;
+    left: 20px;
+    font-size: 30px;
+    font-weight: 500;
+    color: white;
+    z-index: 99;
+  }
+}
+</style>

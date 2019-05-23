@@ -1,10 +1,9 @@
 <template>
   <div id="app">
-    <mt-header title="在线商城"></mt-header>
     <transition name="showview">
       <keep-alive> <router-view></router-view></keep-alive>
     </transition>
-    <mt-tabbar v-model="selected">
+    <mt-tabbar fixed v-model="selected">
       <mt-tab-item id="home">
         <img slot="icon" src="./assets/images/home.png">
         首页

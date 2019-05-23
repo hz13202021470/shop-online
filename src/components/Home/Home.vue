@@ -1,5 +1,6 @@
 <template>
 <div class="home">
+  <Header :title = "title" />
   <!-- <mt-swipe> -->
   <div class="lunbotu">
    <mt-swipe :auto="0">
@@ -11,31 +12,40 @@
   <div class="nine">
     <ul>
       <li>
-        <a href="newslist">
-        <img class="img" src="./menu1.png" alt="">
-        <p class="text">新闻资讯</p>
-        </a>
+        <router-link to="home/news/list">
+          <img class="img" src="./menu1.png" alt="">
+          <p class="text">新闻资讯</p>
+        </router-link>
       </li>
        <li>
-        <a><img class="img" src="./menu2.png" alt="">
-        <p class="text">图文分享</p></a>
+        <router-link to="home/photo/list">
+          <img class="img" src="./menu2.png" alt="">
+          <p class="text">图文分享</p>
+       </router-link>
       </li>
        <li>
-        <a><img class="img" src="./menu3.png" alt="">
-        <p class="text">商品展示</p></a>
+        <router-link to="home/shop/list">
+          <img class="img" src="./menu3.png" alt="">
+          <p class="text">商品展示</p>
+      </router-link>
       </li>
        <li>
-        <a><img class="img" src="./menu4.png" alt="">
-        <p class="text">留言反馈</p></a>
+        <router-link to="home/message">
+          <img class="img" src="./menu4.png" alt="">
+          <p class="text">留言反馈</p>
+      </router-link>
       </li>
        <li>
-        <a><img class="img" src="./menu5.png" alt="">
-        <p class="text">搜索资讯</p></a>
+        <router-link to="/home/search">
+          <img class="img" src="./menu5.png" alt="">
+          <p class="text">搜索资讯</p>
+        </router-link>
       </li>
        <li>
-        <a>
-        <img class="img" src="./menu6.png" alt="">
-        <p class="text">关于我们</p></a>
+        <router-link to="/home/about">
+          <img class="img" src="./menu6.png" alt="">
+          <p class="text">关于我们</p>
+        </router-link>
       </li>
     </ul>
   </div>
@@ -43,10 +53,12 @@
 </template>
 
 <script>
+import Header from '../commont/Header'
 export default {
   data () {
     return {
-      lunboList: []// 轮播图数组
+      lunboList: [], // 轮播图数组
+      title: '在线商城'
     }
   },
   methods: {
@@ -56,7 +68,6 @@ export default {
         let data = res.data
         if (data.status === 0) {
           this.lunboList = data.message
-          console.log(this.lunboList)
         }
       }).catch(err => {
         console.log('获取轮播图数据异常' + err)
@@ -65,6 +76,9 @@ export default {
   },
   created () {
     this.getLunbo()
+  },
+  components: {
+    Header
   }
 }
 </script>
@@ -87,7 +101,7 @@ export default {
       margin:1.499vh 0 0 0 ;
       ul {
         li {
-          width:33.3vw;
+          width:33.3%;
           height: 15vh;
           float:left;
           text-align: center;
@@ -98,6 +112,7 @@ export default {
           }
           .text{
             font-size: 14px;
+            color: black;
           }
         }
       }

@@ -1,6 +1,8 @@
 # shop
 一个在线商城的项目
-
+使用vue+vue-cli3+mint-ui+moment(时间格式化插件)
+# 完成进度
+ 1. 2019-05-23 完成新闻列表的布局 
 ## Project setup
 ```
 npm install

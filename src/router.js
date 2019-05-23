@@ -4,6 +4,7 @@ import Home from '@/components/Home/Home'
 import Member from '@/components/Member/Member'
 import Shopcart from '@/components/Shopcart/Shopcart'
 import Search from '@/components/Search/Search'
+import NewsList from '@/components/News/NewsList'
 
 Vue.use(Router)
 
@@ -31,9 +32,15 @@ export default new Router({
       component: Shopcart
     },
     {
-    path: '/search',
+      path: '/search',
       name: 'search',
       component: Search
+    },
+    // 新闻列表
+    {
+      path: '/home/news/list',
+      name: 'newslist',
+      component: NewsList
     }
   ]
 })
