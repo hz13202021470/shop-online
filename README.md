@@ -3,6 +3,7 @@
 使用vue+vue-cli3+mint-ui+moment(时间格式化插件)
 # 完成进度
  1. 2019-05-23 完成新闻列表的布局 
+ 2. 2019-05-24 完成新闻详情页 （有个问题，我使用keep-alive 保持状态，但是新闻详情页却有bug,这个要认真想一想）
 ## Project setup
 ```
 npm install

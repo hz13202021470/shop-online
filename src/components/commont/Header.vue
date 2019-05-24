@@ -33,6 +33,7 @@ export default {
 
 <style lang="less" scoped>
 .header_bar {
+  z-index: 9999;
   span {
     position: absolute;
     top: 6px;

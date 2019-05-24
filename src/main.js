@@ -10,6 +10,9 @@ import Moment from 'moment'
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 
+// 引入头部组件，并注册为全局组件
+import Header from './components/commont/Header.vue'
+
 // 引入自己的css
 import './assets/css/global.css'
 import './assets/css/reset.css'
@@ -27,6 +30,9 @@ Vue.use(MintUI)
 Vue.filter('covertTime', function (data, formatStr) {
   return Moment(data).format(formatStr)
 })
+
+// 注册为全局组件
+Vue.component(Header.name, Header)
 
 Vue.config.productionTip = false
 

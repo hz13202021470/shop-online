@@ -1,6 +1,6 @@
 <template>
 <div class="home">
-  <Header :title = "title" />
+  <Header title = "在线商城" />
   <!-- <mt-swipe> -->
   <div class="lunbotu">
    <mt-swipe :auto="0">
@@ -53,12 +53,10 @@
 </template>
 
 <script>
-import Header from '../commont/Header'
 export default {
   data () {
     return {
-      lunboList: [], // 轮播图数组
-      title: '在线商城'
+      lunboList: [] // 轮播图数组
     }
   },
   methods: {
@@ -77,9 +75,7 @@ export default {
   created () {
     this.getLunbo()
   },
-  components: {
-    Header
-  }
+  components: {}
 }
 </script>
 
