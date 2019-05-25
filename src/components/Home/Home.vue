@@ -12,7 +12,7 @@
   <div class="nine">
     <ul>
       <li>
-        <router-link to="home/news/list">
+        <router-link to="/news/list">
           <img class="img" src="./menu1.png" alt="">
           <p class="text">新闻资讯</p>
         </router-link>

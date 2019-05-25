@@ -39,7 +39,7 @@ export default new Router({
     },
     // 新闻列表
     {
-      path: '/home/news/list',
+      path: '/news/list',
       name: 'newslist',
       component: NewsList
     },

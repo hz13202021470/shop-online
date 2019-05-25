@@ -1,6 +1,6 @@
 <template>
    <div class="header_bar">
-    <span @click="goback" v-show="show">&lt;</span>
+    <span @click.stop="goback" v-if="show">&lt;</span>
     <mt-header :title="title"></mt-header>
    </div>
 </template>
@@ -22,7 +22,8 @@ export default {
     }
   },
   methods: {
-    goback () {
+    goback (event) {
+      console.log("0k")
       this.$router.go(-1)
     }
   },

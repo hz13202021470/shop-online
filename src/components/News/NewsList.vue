@@ -44,6 +44,8 @@ export default {
               this.newslistScroll = new BScroll('.new_list', {
                 click: true
               })
+            } else {
+              this.newslistScroll.refresh()
             }
           })
         }
