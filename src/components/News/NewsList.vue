@@ -6,7 +6,7 @@
       <li class="list_item" v-for="list in newslist" :key="list.id">
         <router-link :to="{name:'newsdetail', query:{id:list.id}}" class="link">
           <div class="img">
-            <img :src="list.img_url" alt="">
+            <img v-lazy.container="list.img_url" alt="">
           </div>
           <div class="content_wrapper">
              <h1 class="title">{{list.title}}</h1>
@@ -64,21 +64,19 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .news {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 3.333333rem;
-    width: 100%;
-  }
   .new_list {
+    width: 100%;
+    position: absolute;
+    top: 30px;
+    bottom: 55px;
+    left: 0;
+    margin-top: 0.266667rem;
     overflow: hidden;
-    height: 100%;
-    margin: 0.266667rem;
     .list_wrapper {
+      padding: 0.293333rem 0.106667rem 0 0.32rem;
       .list_item {
         border-bottom: 1px solid #ccc;
-        padding-bottom: 0.4rem;
+        padding-bottom: 20px;
         width: 100%;
         height: 100%;
         .link {
@@ -89,8 +87,8 @@ export default {
              width: 2.0rem;
              height: 1.333333rem;
              img {
-              width: 100%;
-              height: 100%;
+              width: 1.706667rem;
+              height: 1.706667rem;
               border-radius: 4px;
              }
            }
@@ -100,18 +98,20 @@ export default {
              overflow:hidden;
              white-space:nowrap;
              .title {
-              font-size: 0.32rem;
+              font-size: 14px;
               overflow:hidden;
               text-overflow:ellipsis;
               white-space:nowrap
              }
              .other {
                 margin-top: 0.266667rem;
-                font-size: 0.24rem;
-                display: flex;
-                justify-content: space-between;
-               .click_count {}
-               .time {}
+                font-size: 12px;
+               .click_count {
+                margin-right: 1.573333rem;
+               }
+               .time {
+                // margin-left: 1.333333rem
+               }
              }
            }
      }

@@ -18,7 +18,7 @@
         </router-link>
       </li>
        <li>
-        <router-link to="home/photo/list">
+        <router-link to="/photo/list">
           <img class="img" src="./menu2.png" alt="">
           <p class="text">图文分享</p>
        </router-link>
@@ -98,16 +98,15 @@ export default {
       ul {
         li {
           width:33.3%;
-          height: 15vh;
           float:left;
           text-align: center;
-          line-height: 2.998vh;
+          line-height: 0.8rem;
           .img {
-            width: 13.33vw;
-            height: 7.496vh;
+            width: 60px;
+            height: 60px;
           }
           .text{
-            font-size: 14px;
+            font-size: 0.373333rem;
             color: black;
           }
         }

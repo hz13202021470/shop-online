@@ -23,7 +23,6 @@ export default {
   },
   methods: {
     goback (event) {
-      console.log("0k")
       this.$router.go(-1)
     }
   },

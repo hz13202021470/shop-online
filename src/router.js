@@ -6,6 +6,7 @@ import Shopcart from '@/components/Shopcart/Shopcart'
 import Search from '@/components/Search/Search'
 import NewsList from '@/components/News/NewsList'
 import NewsDetail from '@/components/News/NewsDetail'
+import PhotoList from '@/components/Photo/PhotoList'
 
 Vue.use(Router)
 
@@ -43,10 +44,17 @@ export default new Router({
       name: 'newslist',
       component: NewsList
     },
+    // 新闻详情
     {
       path: '/newsdetail',
       name: 'newsdetail',
       component: NewsDetail
+    },
+    // 图文分享
+    {
+      name: 'photolist',
+      path: '/photo/list',
+      component: PhotoList
     }
   ]
 })

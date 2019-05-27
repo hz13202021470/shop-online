@@ -1,7 +1,7 @@
 <template>
 <div class="news_detail">
+ <Header title="新闻详情"/>
   <div class="detail_wrapper">
-   <Header title="新闻详情"/>
    <div class="content_wrapper">
      <h1 class="title">{{detail.title}}</h1>
      <div class="other">
@@ -9,6 +9,7 @@
       <span class="time">添加时间：{{detail.add_time | covertTime('YYYY-MM-DD')}}</span>
      </div>
      <div class="content" v-html="detail.content">
+      <p><b></b></p>
       </div>
     </div>
   </div>
@@ -36,7 +37,7 @@ export default {
           this.$nextTick(() => {
             Indicator.close()
             if (!this.newsDetailScroll) {
-              this.newslistScroll = new BScroll('.news_detail', {
+              this.newslistScroll = new BScroll('.detail_wrapper', {
                 // click: true
               })
             } else {
@@ -61,30 +62,46 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less" >
 .news_detail {
-  position: absolute;
-  top: 0;
-  bottom: 1.333333rem;
-  left: 0;
+  height: 100%;
   .detail_wrapper {
+    overflow: hidden;
+    position: absolute;
+    top: 40px;
+    bottom: 55px;
+    left: 0;
     .content_wrapper {
       margin: 0.266667rem;
       .title {
         font-size: 0.426667rem;
         font-weight: 700;
         color: blue;
+        padding: 0.266667rem 0;
       }
       .other {
+        font-size: 12px;
         margin-top: 0.266667rem;
-        .click {
-          margin-right: 0.666667rem;
-        }
+        display: flex;
+        justify-content: space-around;
+        .click {}
         .time {}
       }
       .content {
         margin-top: 0.266667rem;
         font-size: 0.346667rem;
+        overflow: hidden;
+        line-height: 20px ;
+        &>p {
+          text-indent: 0.16rem;
+          white-space: pre-wrap;
+          &>b {
+            display: inline-block;
+            text-indent: 0;
+            font-size: 16px;
+            color: blue;
+          }
+        }
       }
     }
   }

@@ -2,8 +2,9 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+
 // 引入移动端适配插件
-import 'lib-flexible'
+import 'amfe-flexible'
 // 引入moment
 import Moment from 'moment'
 // 引入mint-ui
@@ -24,7 +25,21 @@ Axios.defaults.baseURL = 'http://www.liulongbin.top:3005/api/'
 Vue.prototype.$axios = Axios
 
 // 使用mint-ui
-Vue.use(MintUI)
+Vue.use(MintUI, {
+  lazyload: {
+    preLoad: 1.3,
+    error: '',
+    loading: require('./assets/images/lazy.gif'),
+    attempt: 1,
+    filter: {
+      webp (listener, options) {
+
+      }
+    },
+    observer: false,
+    throttleWait: 1000
+  }
+})
 
 // 定义moment插件为全局过滤器
 Vue.filter('covertTime', function (data, formatStr) {

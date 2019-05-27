@@ -42,26 +42,20 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .showview-enter {
-    opacity: 0;
-    transform: translateX(100%);
-  }
-  .showview-leave-to {
-    opacity: 0;
-    transform: translateX(-90%);
-    position:absolute;
-  }
-  .showview-enter-active, .showview-leave-active {
-    transition:all 0.3s ease;
-  }
-  #app{
-     overflow: hidden;
-     .mint-tabbar {
-      &>.mint-tab-item {
-        &.is-selected {
-          background:#fff;
-        }
-      }
-    }
-  }
+.showview-enter {
+  opacity: 0;
+  transform: translateX(100%);
+}
+.showview-leave-to {
+  opacity: 0;
+  transform: translateX(-90%);
+  position:absolute;
+}
+.showview-enter-active, .showview-leave-active {
+  transition:all 0.3s ease;
+}
+#app{
+   overflow: hidden;
+   height: 100%;
+}
 </style>
