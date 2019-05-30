@@ -1,44 +1,46 @@
 <template>
 <div class="news_detail">
+ <Loading :info="detail" />
  <Header title="新闻详情"/>
-  <div class="detail_wrapper">
+  <div class="detail_wrapper" v-if="detail.length !== 0">
    <div class="content_wrapper">
-     <h1 class="title">{{detail.title}}</h1>
-     <div class="other">
-      <span class="click">点击次数：{{detail.click}}次</span>
-      <span class="time">添加时间：{{detail.add_time | covertTime('YYYY-MM-DD')}}</span>
-     </div>
-     <div class="content" v-html="detail.content">
+     <h1 class="title">{{detail[0].title}}</h1>
+    <div class="other">
+      <span class="click">点击次数：{{detail[0].click}}次</span>
+      <span class="time">添加时间：{{detail[0].add_time | covertTime('YYYY-MM-DD')}}</span>
+    </div>
+    <!-- 内容 -->
+    <div class="content" v-html="detail[0].content">
       <p><b></b></p>
-      </div>
+    </div>
+    <!-- 评论 -->
+    <Comment :id = "id" />
     </div>
   </div>
 </div>
 </template>
 
 <script>
-import { Indicator } from 'mint-ui'
 import BScroll from 'better-scroll'
+import Comment from '../commont/Comment.vue'
 export default {
   name: 'NewsDetail',
   data () {
     return {
-      detail: {} // 新闻详情对象
+      id: this.$route.query.id, // 获取路由上的id
+      detail: [] // 新闻详情数组
     }
   },
   methods: {
     getDetail () {
-      Indicator.open()
-      let id = this.$route.query.id
-      this.$axios.get('getnew/' + id).then(res => {
+      this.$axios.get('getnew/' + this.id).then(res => {
         let data = res.data
         if (data.status === 0) {
-          this.detail = data.message[0]
+          this.detail = data.message
           this.$nextTick(() => {
-            Indicator.close()
             if (!this.newsDetailScroll) {
               this.newslistScroll = new BScroll('.detail_wrapper', {
-                // click: true
+                click: true
               })
             } else {
               this.newsDetailScroll.refresh()
@@ -56,8 +58,15 @@ export default {
   mounted () {
   },
   activated () {
+    this.id = this.$route.query.id
     // 当详情页被激活的时候才去获取数据
     this.getDetail()
+  },
+  deactivated () {
+    this.detail = []
+  },
+  components: {
+    Comment
   }
 }
 </script>
@@ -72,7 +81,7 @@ export default {
     bottom: 55px;
     left: 0;
     .content_wrapper {
-      margin: 0.266667rem;
+      padding: 0.266667rem;
       .title {
         font-size: 0.426667rem;
         font-weight: 700;

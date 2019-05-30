@@ -12,19 +12,19 @@
   <div class="nine">
     <ul>
       <li>
-        <router-link to="/news/list">
+        <router-link to="/home/newslist">
           <img class="img" src="./menu1.png" alt="">
           <p class="text">新闻资讯</p>
         </router-link>
       </li>
        <li>
-        <router-link to="/photo/list">
+        <router-link to="/home/photolist">
           <img class="img" src="./menu2.png" alt="">
           <p class="text">图文分享</p>
        </router-link>
       </li>
        <li>
-        <router-link to="home/shop/list">
+        <router-link to="home/shoplist">
           <img class="img" src="./menu3.png" alt="">
           <p class="text">商品展示</p>
       </router-link>
@@ -106,7 +106,7 @@ export default {
             height: 60px;
           }
           .text{
-            font-size: 0.373333rem;
+            font-size: 16px;
             color: black;
           }
         }

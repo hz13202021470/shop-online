@@ -11,8 +11,12 @@ import Moment from 'moment'
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 
+// 引入缩略图查看器
+import VuePreview from 'vue2-preview'
+
 // 引入头部组件，并注册为全局组件
 import Header from './components/commont/Header.vue'
+import Loading from './components/commont/Loading.vue'
 
 // 引入自己的css
 import './assets/css/global.css'
@@ -22,6 +26,7 @@ import './assets/css/reset.css'
 import Axios from 'axios'
 // 配置公共URL
 Axios.defaults.baseURL = 'http://www.liulongbin.top:3005/api/'
+Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 Vue.prototype.$axios = Axios
 
 // 使用mint-ui
@@ -40,6 +45,7 @@ Vue.use(MintUI, {
     throttleWait: 1000
   }
 })
+Vue.use(VuePreview)
 
 // 定义moment插件为全局过滤器
 Vue.filter('covertTime', function (data, formatStr) {
@@ -48,6 +54,7 @@ Vue.filter('covertTime', function (data, formatStr) {
 
 // 注册为全局组件
 Vue.component(Header.name, Header)
+Vue.component(Loading.name, Loading)
 
 Vue.config.productionTip = false
 

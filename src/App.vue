@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <transition name="showview">
-      <keep-alive> <router-view></router-view></keep-alive>
+      <keep-alive><router-view ></router-view></keep-alive>
     </transition>
     <mt-tabbar fixed v-model="selected">
       <mt-tab-item id="home">
@@ -48,11 +48,11 @@ export default {
 }
 .showview-leave-to {
   opacity: 0;
-  transform: translateX(-90%);
+  transform: translateX(-100%);
   position:absolute;
 }
 .showview-enter-active, .showview-leave-active {
-  transition:all 0.3s ease;
+  transition:all .5s ease;
 }
 #app{
    overflow: hidden;

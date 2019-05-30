@@ -1,12 +1,13 @@
 <template>
  <div class="news">
+  <Loading :info = "newslist" />
   <Header title="新闻列表"/>
   <div class="new_list">
     <ul class="list_wrapper">
       <li class="list_item" v-for="list in newslist" :key="list.id">
         <router-link :to="{name:'newsdetail', query:{id:list.id}}" class="link">
           <div class="img">
-            <img v-lazy.container="list.img_url" alt="">
+            <img v-lazy="list.img_url" alt="">
           </div>
           <div class="content_wrapper">
              <h1 class="title">{{list.title}}</h1>
@@ -24,7 +25,6 @@
 
 <script>
 import BScroll from 'better-scroll'
-import { Indicator } from 'mint-ui'
 export default {
   data () {
     return {
@@ -34,7 +34,6 @@ export default {
   methods: {
     // 获取新闻列表数据
     getNewsList () {
-      Indicator.open()
       this.$axios.get('getnewslist').then((res) => {
         let data = res.data
         if (data.status === 0) {
@@ -49,7 +48,6 @@ export default {
             }
           })
         }
-        Indicator.close()
       }).catch((err) => {
         console.log('获取数据异常' + err)
       })
@@ -73,7 +71,7 @@ export default {
     margin-top: 0.266667rem;
     overflow: hidden;
     .list_wrapper {
-      padding: 0.293333rem 0.106667rem 0 0.32rem;
+      padding: 0.293333rem 0.64rem 0 0.32rem;
       .list_item {
         border-bottom: 1px solid #ccc;
         padding-bottom: 20px;
@@ -97,6 +95,7 @@ export default {
              margin-top: 0.066667rem;
              overflow:hidden;
              white-space:nowrap;
+             width: 100%;
              .title {
               font-size: 14px;
               overflow:hidden;
@@ -106,8 +105,10 @@ export default {
              .other {
                 margin-top: 0.266667rem;
                 font-size: 12px;
+                width: 100%;
+                display: flex;
+                justify-content: space-around;
                .click_count {
-                margin-right: 1.573333rem;
                }
                .time {
                 // margin-left: 1.333333rem

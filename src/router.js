@@ -4,9 +4,6 @@ import Home from '@/components/Home/Home'
 import Member from '@/components/Member/Member'
 import Shopcart from '@/components/Shopcart/Shopcart'
 import Search from '@/components/Search/Search'
-import NewsList from '@/components/News/NewsList'
-import NewsDetail from '@/components/News/NewsDetail'
-import PhotoList from '@/components/Photo/PhotoList'
 
 Vue.use(Router)
 
@@ -40,21 +37,27 @@ export default new Router({
     },
     // 新闻列表
     {
-      path: '/news/list',
+      path: '/home/newslist',
       name: 'newslist',
-      component: NewsList
+      component: resolve => require(['@/components/News/NewsList'], resolve)
     },
     // 新闻详情
     {
-      path: '/newsdetail',
+      path: '/home/newsdetail',
       name: 'newsdetail',
-      component: NewsDetail
+      component: resolve => require(['@/components/News/NewsDetail'], resolve)
     },
     // 图文分享
     {
       name: 'photolist',
-      path: '/photo/list',
-      component: PhotoList
+      path: '/home/photolist',
+      component: resolve => require(['@/components/Photo/PhotoList'], resolve)
+    },
+    // 图文详情
+    {
+      name: 'photodetail',
+      path: '/home/photodetail',
+      component: resolve => require(['@/components/Photo/PhotoDetail'], resolve)
     }
   ]
 })

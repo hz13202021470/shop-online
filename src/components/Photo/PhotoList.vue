@@ -1,15 +1,17 @@
 <template>
   <div class="photo">
+    <Loading :info="list" />
     <Header title="图片分享" />
     <div class="top_scroll">
       <ul class="top_content" :style="{width:largeWidth + 'px'}">
         <li class="item" v-for="(item, i) in cateList" :key="item.id" :class="{'active':current === i}" @click="goToCategory(i, item.id, $event)">{{item.title}}</li>
       </ul>
     </div>
+    <!-- 图片分享列表 -->
     <div class="photo_list" v-show="flag">
      <ul>
       <li v-for="photo in list" :key="photo.id">
-        <a class="link" href="#">
+        <router-link class="link" :to="{name:'photodetail',query:{id:photo.id}}">
          <div class="img">
           <img v-lazy.container="photo.img_url" alt="" :key="photo.id">
          </div>
@@ -17,7 +19,7 @@
            <h1 class="title">{{photo.title}}</h1>
           <p class="text">{{photo.zhaiyao}}</p>
          </div>
-        </a>
+        </router-link>
       </li>
      </ul>
     </div>
@@ -56,7 +58,7 @@ export default {
           id: 0
         }
         this.cateList.unshift(all)
-        this.largeWidth = document.documentElement.clientWidth * 2
+        this.largeWidth = document.documentElement.clientWidth * 2.5
         this.$nextTick(() => {
           if (!this.topScroll) {
             this.topScroll = new BScroll('.top_scroll', {
@@ -129,21 +131,21 @@ image[lazy=loading] {
   .top_scroll {
     overflow: hidden;
     margin: 0.266667rem 0 0.266667rem 0.266667rem;
-    font-size: 13px;
+    font-size: 14px;
     .top_content {
       display: flex;
-      justify-content: space-between;
+      justify-content: space-around;
       .item {
        &.active {
          color:#26a2ff;
-         font-size: 14px;
+         font-size: 16px;
         }
       }
     }
   }
   .photo_list {
     position: absolute;
-    top: 2.0rem;
+    top: 2.133333rem;
     bottom: 55px;
     left: 0;
     overflow: hidden;
