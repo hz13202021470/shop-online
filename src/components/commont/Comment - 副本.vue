@@ -1,5 +1,10 @@
 <template>
   <div class="comment">
+    <mt-loadmore :bottom-method="loadBottom"
+                 :bottom-all-loaded="allLoaded"
+                 :auto-fill="false"
+                 @bottom-status-change="handleBottomChange"
+                 ref="loadmore">
     <h3 class="title">发表评论</h3>
     <hr>
     <textarea placeholder="请输入评论内容" maxlength="120" class="text" v-model="msg"></textarea>
@@ -18,7 +23,13 @@
         </li>
       </ul>
     </div>
-    <mt-button type="danger" size="large" plain @click="getMore">加载更多</mt-button>
+    <div v-show="allLoaded" class="end_txt">数据加载完毕</div>
+    <div slot="bottom" class="mint-loadmore-bottom">
+       <span v-show="bottomStatus !== 'loading'" :class="{ 'rotate': bottomStatus === 'drop' }">↑</span>
+       <span  v-show="bottomStatus === 'loading'"><mt-spinner type="snake" color="#26a2ff" :size="10"></mt-spinner></span>
+       <span class="mint-loadmore-text">{{bottomText}}</span>
+    </div>
+    </mt-loadmore>
   </div>
 </template>
 
@@ -29,7 +40,13 @@ export default {
     return {
       pageindex: 1, // 默认显示的评论页
       comments: [], // 评论数组
-      msg: '' // 评论内容
+      msg: '', // 评论内容
+      allLoaded: false, // 数据是否加载完毕
+      bottomStatus: '', // 底部上拉加载状态
+      bottomText: '', // 底部上拉加载文字
+      bottomPullText: '上拉刷新',
+      bottomDropText: '释放更新',
+      bottomLoadingText: '加载中...'
     }
   },
   methods: {
@@ -37,6 +54,11 @@ export default {
     getComments () {
       this.$axios.get(`getcomments/${this.id}?pageindex=${this.pageindex}`).then(res => {
         let data = res.data
+        if (data.message.length === 0) {
+          this.allLoaded = true
+          this.handleBottomChange('loadingEnd') // 数据加载完毕 修改状态码
+          this.$refs.loadmore.onBottomLoaded()
+        }
         if (data.status === 0) {
           // 利用数组拼接，否则点击加载更多会覆盖前面的内容
           this.comments = this.comments.concat(data.message)
@@ -44,11 +66,6 @@ export default {
       }).catch(err => {
         Toast('获取评论数据失败' + err)
       })
-    },
-    // 加载更多内容
-    getMore () {
-      this.pageindex++
-      this.getComments()
     },
     // 发表评论
     postComment () {
@@ -71,6 +88,14 @@ export default {
       }).catch(err => {
         Toast('发表评论失败' + err)
       })
+    },
+    handleBottomChange (status) {
+      this.bottomStatus = status
+    },
+    loadBottom () {
+      this.handleBottomChange('loading')
+      this.pageindex++
+      this.getComments()
     }
   },
   created () {
@@ -79,12 +104,28 @@ export default {
   mounted () {
     // console.log(this.id)
   },
-  props: ['id']
+  props: ['id'],
+  watch: {
+    bottomStatus (val) {
+      switch (val) {
+        case 'pull':
+          this.bottomText = this.bottomPullText
+          break
+        case 'drop':
+          this.bottomText = this.bottomDropText
+          break
+        case 'loading':
+          this.bottomText = this.bottomLoadingText
+          break
+      }
+    }
+  }
 }
 </script>
 
 <style lang="less" scoped>
 .comment {
+  font-size: 16px;
   .title {
   }
   .text {
@@ -108,6 +149,21 @@ export default {
     .cmt_content {
       margin-top: 0.266667rem;
       text-indent: 2em;
+    }
+  }
+  .end_txt {
+    color: #ccc;
+    text-align: center;
+    font-size: 16px;
+  }
+  .mint-loadmore-bottom {
+     span {
+      display: inline-block;
+      vertical-align: middle;
+      transition: 0.3s linear;
+      &.rotate {
+       transform: rotate(180deg);
+      }
     }
   }
 }

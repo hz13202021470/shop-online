@@ -1,11 +1,11 @@
 <template>
  <div class="news">
-  <Loading :info = "newslist" />
+  <Loading  v-if="isflag"/>
   <Header title="新闻列表"/>
   <div class="new_list">
     <ul class="list_wrapper">
       <li class="list_item" v-for="list in newslist" :key="list.id">
-        <router-link :to="{name:'newsdetail', query:{id:list.id}}" class="link">
+        <router-link :to="{name:'newsdetail', params:{id:list.id}}" class="link">
           <div class="img">
             <img v-lazy="list.img_url" alt="">
           </div>
@@ -28,16 +28,19 @@ import BScroll from 'better-scroll'
 export default {
   data () {
     return {
-      newslist: [] // 新闻列表数组
+      newslist: [], // 新闻列表数组
+      isflag: false
     }
   },
   methods: {
     // 获取新闻列表数据
     getNewsList () {
+      this.isflag = true
       this.$axios.get('getnewslist').then((res) => {
         let data = res.data
         if (data.status === 0) {
           this.newslist = data.message
+          this.isflag = false
           this.$nextTick(() => {
             if (!this.newslistScroll) {
               this.newslistScroll = new BScroll('.new_list', {
@@ -71,15 +74,16 @@ export default {
     margin-top: 0.266667rem;
     overflow: hidden;
     .list_wrapper {
-      padding: 0.293333rem 0.64rem 0 0.32rem;
+      padding: 0.133333rem;
       .list_item {
-        border-bottom: 1px solid #ccc;
+        border: 1px solid #ccc;
         padding-bottom: 20px;
+        margin-top: 5px;
         width: 100%;
         height: 100%;
+        border-radius: 4px;
         .link {
            display: flex;
-           margin-top: 0.333333rem;
            color: #26a2ff;
            .img {
              width: 2.0rem;

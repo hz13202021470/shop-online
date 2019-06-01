@@ -1,6 +1,6 @@
 <template>
   <div class="photo">
-    <Loading :info="list" />
+    <Loading  v-if="isflag" />
     <Header title="图片分享" />
     <div class="top_scroll">
       <ul class="top_content" :style="{width:largeWidth + 'px'}">
@@ -11,7 +11,7 @@
     <div class="photo_list" v-show="flag">
      <ul>
       <li v-for="photo in list" :key="photo.id">
-        <router-link class="link" :to="{name:'photodetail',query:{id:photo.id}}">
+        <router-link class="link" :to="{name:'photodetail',params:{id:photo.id}}">
          <div class="img">
           <img v-lazy.container="photo.img_url" alt="" :key="photo.id">
          </div>
@@ -37,7 +37,8 @@ export default {
       largeWidth: 0,
       list: [], // 图片列表
       currentIndex: 0,
-      flag: true
+      flag: true,
+      isflag: false
     }
   },
   computed: {
@@ -99,6 +100,7 @@ export default {
     },
     // 跳转分类
     goToCategory (i, id, event) {
+      this.isflag = true
       if (!event._constructed) return
       this.currentIndex = i
       this.$axios.get('getimages/' + id).then(res => {
@@ -106,6 +108,7 @@ export default {
         if (data.status === 0) {
           this.list = data.message
         }
+        this.isflag = false
         if (!this.list.length) {
           this.flag = false
         } else {

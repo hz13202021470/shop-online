@@ -1,16 +1,16 @@
 <template>
 <div class="news_detail">
- <Loading :info="detail" />
+ <Loading v-if="isflag"/>
  <Header title="新闻详情"/>
-  <div class="detail_wrapper" v-if="detail.length !== 0">
+  <div class="detail_wrapper">
    <div class="content_wrapper">
-     <h1 class="title">{{detail[0].title}}</h1>
+     <h1 class="title">{{detail.title}}</h1>
     <div class="other">
-      <span class="click">点击次数：{{detail[0].click}}次</span>
-      <span class="time">添加时间：{{detail[0].add_time | covertTime('YYYY-MM-DD')}}</span>
+      <span class="click">点击次数：{{detail.click}}次</span>
+      <span class="time">添加时间：{{detail.add_time | covertTime('YYYY-MM-DD')}}</span>
     </div>
     <!-- 内容 -->
-    <div class="content" v-html="detail[0].content">
+    <div class="content" v-html="detail.content">
       <p><b></b></p>
     </div>
     <!-- 评论 -->
@@ -27,23 +27,28 @@ export default {
   name: 'NewsDetail',
   data () {
     return {
-      id: this.$route.query.id, // 获取路由上的id
-      detail: [] // 新闻详情数组
+      id: this.$route.params.id, // 获取路由上的id
+      detail: {}, // 新闻详情数组
+      isflag: false
     }
   },
   methods: {
     getDetail () {
+      this.isflag = true
       this.$axios.get('getnew/' + this.id).then(res => {
         let data = res.data
         if (data.status === 0) {
-          this.detail = data.message
+          this.detail = data.message[0]
+          this.isflag = false
           this.$nextTick(() => {
             if (!this.newsDetailScroll) {
-              this.newslistScroll = new BScroll('.detail_wrapper', {
+              this.newsDetailScroll = new BScroll('.detail_wrapper', {
                 click: true
               })
             } else {
-              this.newsDetailScroll.refresh()
+              this.newsDetailScroll = new BScroll('.detail_wrapper', {
+                click: true
+              })
             }
           })
         }
@@ -58,7 +63,7 @@ export default {
   mounted () {
   },
   activated () {
-    this.id = this.$route.query.id
+    this.id = this.$route.params.id
     // 当详情页被激活的时候才去获取数据
     this.getDetail()
   },

@@ -43,7 +43,7 @@ export default new Router({
     },
     // 新闻详情
     {
-      path: '/home/newsdetail',
+      path: '/home/newsdetail/:id',
       name: 'newsdetail',
       component: resolve => require(['@/components/News/NewsDetail'], resolve)
     },
@@ -56,7 +56,7 @@ export default new Router({
     // 图文详情
     {
       name: 'photodetail',
-      path: '/home/photodetail',
+      path: '/home/photodetail/:id',
       component: resolve => require(['@/components/Photo/PhotoDetail'], resolve)
     }
   ]

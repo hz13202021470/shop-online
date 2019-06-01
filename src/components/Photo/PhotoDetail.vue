@@ -1,8 +1,8 @@
 <template>
 <div class="wrapper">
   <Header title="图片详情" />
-  <Loading :info = "img"/>
-  <div class="photo_detail" v-if="img.length !== 0">
+  <Loading v-if="isflag"/>
+  <div class="photo_detail" ref="photo_detail">
       <div class="detail_content">
         <h1 class="title">{{photodetail.title}}</h1>
         <div class="other">
@@ -17,8 +17,8 @@
             :previewBoxStyle="{display: 'flex', 'flex-wrap': 'wrap'}"
           />
         </div>
-        <div class="text">{{photodetail.content}}</div>
-        <Comment :id="this.$route.query.id" />
+        <div class="text" @click="click1">{{photodetail.content}}</div>
+        <Comment :id="id" ref="comment"/>
       </div>
   </div>
 </div>
@@ -31,28 +31,35 @@ import BScroll from 'better-scroll'
 export default {
   data () {
     return {
-      id: this.$route.query.id,
+      id: this.$route.params.id,
       photodetail: {}, // 图片分享详情数组
-      img: [] // 图片的缩略图
+      img: [], // 图片的缩略图
+      isflag: false
     }
+  },
+  computed: {
   },
   methods: {
     // 获取详情数据
     getPhotoDetial () {
+      this.isflag = true
       this.$axios.get('getimageInfo/' + this.id).then(res => {
         let data = res.data
         if (data.status === 0) {
           this.photodetail = data.message[0]
+          this.isflag = false
+          this.$nextTick(() => {
+            if (!this.Scroll) {
+              this.Scroll = new BScroll('.photo_detail', {
+                click: true
+              })
+            } else {
+              this.Scroll = new BScroll('.photo_detail', {
+                click: true
+              })
+            }
+          })
         }
-        this.$nextTick(() => {
-          if (!this.Scroll) {
-            this.Scroll = new BScroll('.photo_detail', {
-              click: true
-            })
-          } else {
-            this.Scroll.refresh()
-          }
-        })
       }).catch(err => {
         Toast('获取数据异常' + err)
       })
@@ -71,18 +78,21 @@ export default {
       }).catch(err => {
         Toast('获取图片缩略图异常' + err)
       })
+    },
+    click1 () {
+      this.$refs['comment'].show()
     }
 
   },
   activated () {
-    this.id = this.$route.query.id
-    this.getPhotoDetial()
+    this.id = this.$route.params.id
     this.getImage()
-    console.log('keep-alive被激活')
+    this.getPhotoDetial()
   },
   deactivated () {
     this.img = []
-    console.log('keep-alive被销毁')
+  },
+  created () {
   },
   mounted () {
   },
@@ -95,13 +105,16 @@ export default {
 <style lang='less' scoped>
 .wrapper {
   .photo_detail {
-    margin: 10px;
+    padding: 10px;
     position: fixed;
     top: 44px;
     left: 0;
     bottom: 55px;
     overflow: hidden;
     .detail_content {
+      &.is {
+        height: 640px;
+      }
       .title {
         color:#26a2ff;
         text-align: center;

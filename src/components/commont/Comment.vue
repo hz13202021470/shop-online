@@ -94,8 +94,11 @@ export default {
     },
     loadBottom () {
       this.handleBottomChange('loading')
-      this.pageindex += 50
+      this.pageindex++
       this.getComments()
+    },
+    show () {
+      console.log("op")
     }
   },
   created () {

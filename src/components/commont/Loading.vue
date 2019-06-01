@@ -1,5 +1,5 @@
 <template>
-  <div class="loading" v-if="info.length === 0">
+  <div class="loading">
   </div>
 </template>
 
@@ -9,8 +9,7 @@ export default {
   data () {
     return {
     }
-  },
-  props: ['info']
+  }
 }
 </script>
 
@@ -19,9 +18,10 @@ export default {
   width: 100%;
   height: 100%;
   position:fixed;
-  top: 40px;
-  left: 20px;
+  top: 68px;
+  left: 0;
   bottom: 55px;
+  z-index: 99;
   background: url(../../assets/images/lazy.gif) no-repeat;
   background-color: #fff;
 }
