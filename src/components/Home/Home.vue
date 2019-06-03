@@ -24,7 +24,7 @@
        </router-link>
       </li>
        <li>
-        <router-link to="home/shoplist">
+        <router-link to="/home/goodslist">
           <img class="img" src="./menu3.png" alt="">
           <p class="text">商品展示</p>
       </router-link>
@@ -100,7 +100,7 @@ export default {
           width:33.3%;
           float:left;
           text-align: center;
-          line-height: 0.8rem;
+          margin-top: 0.266667rem;
           .img {
             width: 60px;
             height: 60px;
@@ -108,6 +108,7 @@ export default {
           .text{
             font-size: 16px;
             color: black;
+            margin-top: 0.213333rem;
           }
         }
       }

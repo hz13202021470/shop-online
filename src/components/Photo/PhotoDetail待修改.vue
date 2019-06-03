@@ -2,7 +2,8 @@
 <div class="wrapper">
   <Header title="图片详情" />
   <Loading v-if="isflag"/>
-  <div class="photo_detail" ref="photo_detail">
+  <LoadMove @getComments="getComments" :allLoaded="allLoaded">
+   <div class="photo_detail" ref="photo_detail">
       <div class="detail_content">
         <h1 class="title">{{photodetail.title}}</h1>
         <div class="other">
@@ -17,29 +18,36 @@
             :previewBoxStyle="{display: 'flex', 'flex-wrap': 'wrap'}"
           />
         </div>
-        <div class="text" @click="click1">{{photodetail.content}}</div>
-        <Comment :id="id" ref="comment"/>
+        <div class="text">{{photodetail.content}}</div>
+        <Comment :id="id" :comments="comments" ref="comment"/>
       </div>
-  </div>
+   </div>
+  </LoadMove>
 </div>
 </template>
 
 <script>
 import Comment from '../commont/Comment.vue'
+import LoadMove from '../commont/LoadMove.vue'
 import { Toast } from 'mint-ui'
-import BScroll from 'better-scroll'
 export default {
   data () {
     return {
       id: this.$route.params.id,
       photodetail: {}, // 图片分享详情数组
       img: [], // 图片的缩略图
-      isflag: false
+      isflag: false,
+      pageindex: 1, // 默认显示的评论页
+      comments: [], // 评论数组
+      allLoaded: false
     }
   },
   computed: {
   },
   methods: {
+    get () {
+      console.log('get')
+    },
     // 获取详情数据
     getPhotoDetial () {
       this.isflag = true
@@ -48,17 +56,6 @@ export default {
         if (data.status === 0) {
           this.photodetail = data.message[0]
           this.isflag = false
-          this.$nextTick(() => {
-            if (!this.Scroll) {
-              this.Scroll = new BScroll('.photo_detail', {
-                click: true
-              })
-            } else {
-              this.Scroll = new BScroll('.photo_detail', {
-                click: true
-              })
-            }
-          })
         }
       }).catch(err => {
         Toast('获取数据异常' + err)
@@ -69,7 +66,7 @@ export default {
       this.$axios.get('getthumimages/' + this.id).then(res => {
         let data = res.data
         if (data.status === 0) {
-          data.message.map(item => {
+          data.message.forEach(item => {
             item.h = 400
             item.w = 600
           })
@@ -79,15 +76,31 @@ export default {
         Toast('获取图片缩略图异常' + err)
       })
     },
-    click1 () {
-      this.$refs['comment'].show()
+    // 获取评论数据
+    getComments () {
+      this.$axios.get(`getcomments/${this.id}?pageindex=${this.pageindex}`).then(res => {
+        let data = res.data
+        if (data.message.length === 0) {
+          this.allLoaded = true
+          this.handleBottomChange('loadingEnd') // 数据加载完毕 修改状态码
+          this.$refs.loadmore.onBottomLoaded()
+        }
+        if (data.status === 0) {
+          // 利用数组拼接，否则点击加载更多会覆盖前面的内容
+          this.comments = this.comments.concat(data.message)
+        }
+      }).catch(err => {
+        Toast('没有数据了')
+        this.allLoaded = true
+      })
+      this.pageindex++
     }
-
   },
   activated () {
     this.id = this.$route.params.id
     this.getImage()
     this.getPhotoDetial()
+    this.getComments()
   },
   deactivated () {
     this.img = []
@@ -97,7 +110,8 @@ export default {
   mounted () {
   },
   components: {
-    Comment
+    Comment,
+    LoadMove
   }
 }
 </script>
@@ -106,15 +120,8 @@ export default {
 .wrapper {
   .photo_detail {
     padding: 10px;
-    position: fixed;
-    top: 44px;
-    left: 0;
-    bottom: 55px;
-    overflow: hidden;
+    box-sizing:border-box;
     .detail_content {
-      &.is {
-        height: 640px;
-      }
       .title {
         color:#26a2ff;
         text-align: center;

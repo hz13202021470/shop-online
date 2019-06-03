@@ -18,11 +18,11 @@ export default {
   width: 100%;
   height: 100%;
   position:fixed;
-  top: 68px;
+  top: 1.173333rem;
   left: 0;
-  bottom: 55px;
+  bottom: 1.466667rem;
   z-index: 99;
-  background: url(../../assets/images/lazy.gif) no-repeat;
+  background: url(../../assets/images/lazy3.gif) no-repeat center;
   background-color: #fff;
 }
 </style>

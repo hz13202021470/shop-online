@@ -27,6 +27,18 @@ import Axios from 'axios'
 // 配置公共URL
 Axios.defaults.baseURL = 'http://www.liulongbin.top:3005/api/'
 Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+// 这个是拦截器 数据请求，和数据响应 可以用mint-ui 的图标来表示
+// Axios.interceptors.request.use((config) => {
+//   MintUI.Indicator.open({
+//     text: '加载中...',
+//     spinnerType: 'fading-circle'
+//    })
+//   return config
+// })
+// Axios.interceptors.response.use((response) => {
+//   MintUI.Indicator.close()
+//   return response
+// })
 Vue.prototype.$axios = Axios
 
 // 使用mint-ui

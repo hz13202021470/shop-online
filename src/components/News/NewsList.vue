@@ -77,6 +77,7 @@ export default {
       padding: 0.133333rem;
       .list_item {
         border: 1px solid #ccc;
+        box-shadow: 0 0 0.133333rem #ccc;
         padding-bottom: 20px;
         margin-top: 5px;
         width: 100%;

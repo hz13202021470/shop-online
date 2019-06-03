@@ -1,6 +1,6 @@
 <template>
    <div class="header_bar">
-    <span @click.stop="goback" v-if="show">&lt;</span>
+    <span @click.stop="goback" v-if="show">&lt;返回</span>
     <mt-header :title="title"></mt-header>
    </div>
 </template>
@@ -36,9 +36,9 @@ export default {
   z-index: 9999;
   span {
     position: absolute;
-    top: 6px;
+    top: 9px;
     left: 20px;
-    font-size: 30px;
+    font-size: 18px;
     font-weight: 500;
     color: white;
     z-index: 99;

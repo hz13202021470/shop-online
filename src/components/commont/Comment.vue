@@ -96,9 +96,6 @@ export default {
       this.handleBottomChange('loading')
       this.pageindex++
       this.getComments()
-    },
-    show () {
-      console.log("op")
     }
   },
   created () {

@@ -58,6 +58,12 @@ export default new Router({
       name: 'photodetail',
       path: '/home/photodetail/:id',
       component: resolve => require(['@/components/Photo/PhotoDetail'], resolve)
+    },
+    // 商品列表
+    {
+      name: 'goodlist',
+      path: '/home/goodslist',
+      component: resolve => require(['@/components/GoodsList/GoodsList'], resolve)
     }
   ]
 })

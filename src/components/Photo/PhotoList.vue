@@ -29,7 +29,6 @@
 
 <script>
 import BScroll from 'better-scroll'
-import { Toast } from 'mint-ui'
 export default {
   data () {
     return {
@@ -71,7 +70,7 @@ export default {
           }
         })
       }).catch(err => {
-        Toast({
+        this.$toast({
           message: '获取数据异常' + err,
           position: 'middle',
           duration: 5000
@@ -94,8 +93,10 @@ export default {
             }
           })
         }
-      }).catch(err => {
-        Toast('获取数据异常' + err)
+      }).catch(() => {
+        this.$toast({
+          message: '获取数据失败'
+        })
       })
     },
     // 跳转分类
@@ -117,7 +118,7 @@ export default {
       })
     }
   },
-  created () {
+  mounted () {
     this.getAllcate()
     this.getPhotoListByCateId(0)
   }
