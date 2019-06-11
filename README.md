@@ -11,6 +11,11 @@
  7. 2019-05-31 出现重大bug,在新闻详情页和图片分享详情页中，打开第一个详情页没有问题可以滑动，但是到了第二个就滑动不了，不能用refresh ，只能重新用 this.Scroll = new BScroll('.wrapper', {click: true }) 这样的形式
  8. 2019-06-01 想把这个列表页和详情页改成上拉刷新，列表页还是可以改，但是详情页就有点难改，以为评论数据在一个公共组件中，上拉刷新就要把评论也要刷新一次才行,可能要通过父组件调用子组件的方法才行。重新改造了loading图，原来是使用往这个组件传递一个数组，然后通过数组的长度来判断，当时图片列表中，有些分类没有数据，所以产生bug。
  9. 2019-06-03 昨天尝试把上拉刷新和下拉加载合并在一个组件中，但是再使用上better-scroll的刷就会有问题，所以这个就留着放假再做。做了axios的拦截器，可以在请求发出的时候有mint-ui一个加载组件来全局代替，但是得不到我想要全屏的结果，这个看看能不能把他的样式修个。
+ 10. 2019-06-04， 将loading 组件重构，在里面加一个v-show,然后用vuex 中的一个isLoading 来控制其显示或隐藏，在main.js中的axios 拦截器中修改其值，出现问题，评论下拉加载不需要有loading图，看看怎么解决，下拉加载也出现问题
+ 11. 2019-06-05 评论组件有bug，就是当评论数据还没有到最后一页时，那个加载中的文字没有得到关闭，商品页由于使用miny-ui 中的loadmove组件，所以不能用better-scroll，两者有冲突
+ 12. 2019-06-09, 如果mint-ui中的loadmove 上拉不了，需要给mt-loadmove 加一层div包裹，并设置其样式over-flow: scroll，如果还不能上拉，就把index.html 中的 <!DOCTYPE html> 去掉。 完成商品列表的布局
+ 13. 2019-06-10 ，当商品页下拉后，在上拉会报错 Ignored attempt to cancel a touchmove event with cancelable=false, for example because scrolling is 需要在mint-ui 的包中 common.js 文件--> lib文件夹--> mint-ui.common.js 文件的3064行增加  event.cancelable 这行代码，全局loading失败，还是需要在组件中控制，不能全局控制，否则下拉刷新和上拉加载更多会闪烁
+ 14. 2019-06-11 大致完成商品详情页，感觉还有可以改一些结构
 
 ## Project setup
 ```

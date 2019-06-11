@@ -36,9 +36,9 @@ export default {
   z-index: 9999;
   span {
     position: absolute;
-    top: 9px;
-    left: 20px;
-    font-size: 18px;
+    top: 0.346667rem;
+    left: 0.533333rem;
+    font-size: 14px;
     font-weight: 500;
     color: white;
     z-index: 99;

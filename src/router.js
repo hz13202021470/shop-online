@@ -63,7 +63,13 @@ export default new Router({
     {
       name: 'goodlist',
       path: '/home/goodslist',
-      component: resolve => require(['@/components/GoodsList/GoodsList'], resolve)
+      component: resolve => require(['@/components/Goods/GoodsList'], resolve)
+    },
+    // 商品详情
+    {
+      name: 'goodsDetail',
+      path: '/goodslist/goodsdetail/:id',
+      component: resolve => require(['@/components/Goods/GoodsDetail'], resolve)
     }
   ]
 })

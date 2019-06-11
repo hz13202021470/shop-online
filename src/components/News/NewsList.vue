@@ -1,6 +1,6 @@
 <template>
  <div class="news">
-  <Loading  v-if="isflag"/>
+  <Loading v-show="showLoading" />
   <Header title="新闻列表"/>
   <div class="new_list">
     <ul class="list_wrapper">
@@ -29,18 +29,16 @@ export default {
   data () {
     return {
       newslist: [], // 新闻列表数组
-      isflag: false
+      showLoading: true
     }
   },
   methods: {
     // 获取新闻列表数据
     getNewsList () {
-      this.isflag = true
       this.$axios.get('getnewslist').then((res) => {
         let data = res.data
         if (data.status === 0) {
           this.newslist = data.message
-          this.isflag = false
           this.$nextTick(() => {
             if (!this.newslistScroll) {
               this.newslistScroll = new BScroll('.new_list', {
@@ -51,8 +49,10 @@ export default {
             }
           })
         }
+        this.showLoading = false
       }).catch((err) => {
         console.log('获取数据异常' + err)
+        this.showLoading = false
       })
     }
   },

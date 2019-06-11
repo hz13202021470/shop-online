@@ -1,6 +1,6 @@
 <template>
   <div class="photo">
-    <Loading  v-if="isflag" />
+    <Loading v-show="showLoading" />
     <Header title="图片分享" />
     <div class="top_scroll">
       <ul class="top_content" :style="{width:largeWidth + 'px'}">
@@ -37,7 +37,7 @@ export default {
       list: [], // 图片列表
       currentIndex: 0,
       flag: true,
-      isflag: false
+      showLoading: true
     }
   },
   computed: {
@@ -93,15 +93,16 @@ export default {
             }
           })
         }
+        this.showLoading = false
       }).catch(() => {
         this.$toast({
           message: '获取数据失败'
         })
+        this.showLoading = false
       })
     },
     // 跳转分类
     goToCategory (i, id, event) {
-      this.isflag = true
       if (!event._constructed) return
       this.currentIndex = i
       this.$axios.get('getimages/' + id).then(res => {
@@ -109,7 +110,6 @@ export default {
         if (data.status === 0) {
           this.list = data.message
         }
-        this.isflag = false
         if (!this.list.length) {
           this.flag = false
         } else {

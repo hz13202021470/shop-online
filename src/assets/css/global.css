@@ -1,9 +1,24 @@
 body {
   margin: 0;
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
 }
 input,button,select,textarea {
   outline:none
 }
 textarea {
   resize:none
+}
+
+.mint-spinner-snake {
+  display: inline-block;
+  vertical-align: middle;
+}
+.mint-loadmore-text {
+  vertical-align: baseline;
+}
+.mint-loadmore-bottom span{
+  vertical-align: bottom;
+}
+::-webkit-scrollbar {    
+  width: 0px;
 }

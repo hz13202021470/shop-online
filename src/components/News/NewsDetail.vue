@@ -1,6 +1,6 @@
 <template>
 <div class="news_detail">
- <Loading v-if="isflag"/>
+ <Loading v-show="showLoading" />
  <Header title="新闻详情"/>
   <div class="detail_wrapper">
    <div class="content_wrapper">
@@ -14,7 +14,7 @@
       <p><b></b></p>
     </div>
     <!-- 评论 -->
-    <Comment :id = "id" />
+    <Comment :id="id" />
     </div>
   </div>
 </div>
@@ -29,17 +29,15 @@ export default {
     return {
       id: this.$route.params.id, // 获取路由上的id
       detail: {}, // 新闻详情数组
-      isflag: false
+      showLoading: true
     }
   },
   methods: {
     getDetail () {
-      this.isflag = true
       this.$axios.get('getnew/' + this.id).then(res => {
         let data = res.data
         if (data.status === 0) {
           this.detail = data.message[0]
-          this.isflag = false
           this.$nextTick(() => {
             if (!this.newsDetailScroll) {
               this.newsDetailScroll = new BScroll('.detail_wrapper', {
@@ -52,8 +50,10 @@ export default {
             }
           })
         }
+        this.showLoading = false
       }).catch(err => {
         console.log('获取数据异常' + err)
+        this.showLoading = false
       })
     }
   },

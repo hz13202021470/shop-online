@@ -1,5 +1,5 @@
 <template>
-  <div class="loading">
+  <div class="loading" v-show="this.$store.state.isLoading">
   </div>
 </template>
 
@@ -9,6 +9,8 @@ export default {
   data () {
     return {
     }
+  },
+  created () {
   }
 }
 </script>

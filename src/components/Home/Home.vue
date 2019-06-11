@@ -2,6 +2,7 @@
 <div class="home">
   <Header title = "在线商城" />
   <!-- <mt-swipe> -->
+  <Loading />
   <div class="lunbotu">
    <mt-swipe :auto="0">
     <mt-swipe-item v-for="img in lunboList" :key="img.id">

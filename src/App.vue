@@ -71,7 +71,7 @@ export default {
   transition:all .5s ease;
 }
 #app{
-   overflow: hidden;
-   height: 100%;
+   // overflow: hidden;
+   // height: 100%;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
 <div class="wrapper">
   <Header title="图片详情" />
-  <Loading v-if="isflag"/>
+  <Loading v-show="showLoading" />
   <div class="photo_detail" ref="photo_detail">
       <div class="detail_content">
         <h1 class="title">{{photodetail.title}}</h1>
@@ -34,7 +34,7 @@ export default {
       id: this.$route.params.id,
       photodetail: {}, // 图片分享详情数组
       img: [], // 图片的缩略图
-      isflag: false
+      showLoading: true // loading图
     }
   },
   computed: {
@@ -42,12 +42,10 @@ export default {
   methods: {
     // 获取详情数据
     getPhotoDetial () {
-      this.isflag = true
       this.$axios.get('getimageInfo/' + this.id).then(res => {
         let data = res.data
         if (data.status === 0) {
           this.photodetail = data.message[0]
-          this.isflag = false
           this.$nextTick(() => {
             if (!this.Scroll) {
               this.Scroll = new BScroll('.photo_detail', {
@@ -60,8 +58,10 @@ export default {
             }
           })
         }
+        this.showLoading = false
       }).catch(err => {
         Toast('获取数据异常' + err)
+        this.showLoading = false
       })
     },
     // 获取图片缩略图
@@ -86,8 +86,8 @@ export default {
   },
   activated () {
     this.id = this.$route.params.id
-    this.getImage()
     this.getPhotoDetial()
+    this.getImage()
   },
   deactivated () {
     this.img = []
