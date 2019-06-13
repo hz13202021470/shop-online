@@ -83,7 +83,7 @@ export default {
     overflow: hidden;
     position: absolute;
     top: 40px;
-    bottom: 55px;
+    bottom: 0;
     left: 0;
     .content_wrapper {
       padding: 0.266667rem;

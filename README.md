@@ -15,7 +15,9 @@
  11. 2019-06-05 评论组件有bug，就是当评论数据还没有到最后一页时，那个加载中的文字没有得到关闭，商品页由于使用miny-ui 中的loadmove组件，所以不能用better-scroll，两者有冲突
  12. 2019-06-09, 如果mint-ui中的loadmove 上拉不了，需要给mt-loadmove 加一层div包裹，并设置其样式over-flow: scroll，如果还不能上拉，就把index.html 中的 <!DOCTYPE html> 去掉。 完成商品列表的布局
  13. 2019-06-10 ，当商品页下拉后，在上拉会报错 Ignored attempt to cancel a touchmove event with cancelable=false, for example because scrolling is 需要在mint-ui 的包中 common.js 文件--> lib文件夹--> mint-ui.common.js 文件的3064行增加  event.cancelable 这行代码，全局loading失败，还是需要在组件中控制，不能全局控制，否则下拉刷新和上拉加载更多会闪烁
- 14. 2019-06-11 大致完成商品详情页，感觉还有可以改一些结构
+ 14. 2019-06-11 大致完成商品详情页，感觉还有可以改一些结构，评论组件的bug就是上拉加载一页后，那个转圈还在转(未修复)
+ 15. 2019-06-12 修改了一下商品详情页的结构，增加加入购物车，谷歌浏览器有一个bug 就是position为fixed 的时候，绑定的点击事件不生效，要添加z-index才行，用vue的时候，做动画还是有vue提供的来做。
+ 16. 2019-06-13 完成一部分加入购物车的逻辑，同时修复底部栏那四个链接，当底部做成组件的时候，会在home页面中有浮动元素位置的影响，要把home组件的position设为absolute，height:100%。 当弹出加入购物车，页面会滚动，要全局设置一个方法，当弹出购物的的时候，禁止页面滚动，关闭购物车就让页面滚动。
 
 ## Project setup
 ```

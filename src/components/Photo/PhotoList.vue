@@ -150,7 +150,7 @@ image[lazy=loading] {
   .photo_list {
     position: absolute;
     top: 2.133333rem;
-    bottom: 55px;
+    bottom: 0;
     left: 0;
     overflow: hidden;
     width: 100%;

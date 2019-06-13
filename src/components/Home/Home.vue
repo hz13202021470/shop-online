@@ -50,6 +50,7 @@
       </li>
     </ul>
   </div>
+  <BottomBar />
 </div>
 </template>
 
@@ -81,8 +82,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .home
-    .lunbotu
+  .home {
+    position: absolute;
+    height: 100%;
+    .lunbotu {
       .mint-swipe {
         height: 29.9985vh;
           .mint-swipe-items-wrap {
@@ -94,9 +97,11 @@ export default {
             }
           }
       }
+    }
     .nine {
-      margin:1.499vh 0 0 0 ;
+      padding:0.533333rem 0 0 0;
       ul {
+        overflow: hidden;
         li {
           width:33.3%;
           float:left;
@@ -114,4 +119,5 @@ export default {
         }
       }
     }
+  }
 </style>

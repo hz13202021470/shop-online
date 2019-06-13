@@ -4,7 +4,7 @@
       <keep-alive><router-view ></router-view></keep-alive>
       <!-- <router-view></router-view> -->
     </transition>
-    <mt-tabbar fixed v-model="selected">
+<!--     <mt-tabbar fixed v-model="selected">
       <mt-tab-item id="home">
         <img @click='changeHash' slot="icon" src="./assets/images/home.png">
         首页
@@ -22,30 +22,30 @@
         查找
       </mt-tab-item>
     </mt-tabbar>
-  </div>
+ -->  </div>
 </template>
 
 <script>
 export default {
   data () {
     return {
-      selected: ''
+      // selected: ''
     }
   },
   methods: {
-    changeHash () {
-      // 这里只能用setTimeout 了 不能用$nextTick
-      setTimeout(() => {
-        this.$router.push({
-          name: this.selected
-        })
-      }, 20)
-      // this.$nextTick(() => {
-      //   this.$router.push({
-      //     name: this.selected
-      //   })
-      // })
-    }
+    // changeHash () {
+    //   // 这里只能用setTimeout 了 不能用$nextTick
+    //   setTimeout(() => {
+    //     this.$router.push({
+    //       name: this.selected
+    //     })
+    //   }, 20)
+    //   // this.$nextTick(() => {
+    //   //   this.$router.push({
+    //   //     name: this.selected
+    //   //   })
+    //   // })
+    // }
   },
   watch: {
     // selected (newV, oldV) {

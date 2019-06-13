@@ -151,7 +151,7 @@ export default {
     position: absolute;
     top: 44px;
     left: 0;
-    bottom: 55px;
+    bottom: 0;
     overflow: scroll;
     // touch-action: none;
   }

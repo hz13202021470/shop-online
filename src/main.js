@@ -17,6 +17,7 @@ import VuePreview from 'vue2-preview'
 // 引入头部组件，并注册为全局组件
 import Header from './components/commont/Header.vue'
 import Loading from './components/commont/Loading.vue'
+import BottomBar from './components/commont/BottomBar.vue'
 
 // 引入自己的css
 import './assets/css/global.css'
@@ -68,6 +69,16 @@ Vue.filter('covertTime', function (data, formatStr) {
 // 注册为全局组件
 Vue.component(Header.name, Header)
 Vue.component(Loading.name, Loading)
+Vue.component(BottomBar.name, BottomBar)
+
+// 禁止弹出框滑动
+Vue.prototype.forbidScroll = function () {
+  document.body.style.overflow = 'hidden'
+}
+// 允许弹出框滑动
+Vue.prototype.canScroll = function () {
+  document.body.style.overflow = ''
+}
 
 Vue.config.productionTip = false
 
