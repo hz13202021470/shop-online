@@ -56,7 +56,7 @@
             <label class="text">购买数量</label>
             <div class="num">
               <button class="decrease" :class="{'decrease_off': this.count === 1}" @click="decCount">-</button>
-              <input type="text" max="99" min="1" :value="count">
+              <input :value="count" type="number" @change="changeCount" ref="numberbox">
               <button class="increase" @click="addCount">+</button>
             </div>
           </div>
@@ -65,7 +65,7 @@
            <span v-show="this.price">{{info.sell_price + this.price}} 元</span>
           </div>
           <div class="footer">
-           <mt-button size="large" type="danger">确认</mt-button>
+           <mt-button size="large" type="danger" @click="addCart">确认</mt-button>
           </div>
         </div>
       </div>
@@ -85,7 +85,8 @@ export default {
       showShopCart: false, // 控制购物车显示、隐藏
       price: 0,
       count: 1, // 默认数量为1
-      index: 0
+      index: 0,
+      maxCount: 0 // 最多选择数量
     }
   },
   methods: {
@@ -136,18 +137,36 @@ export default {
     addPrice (price, index) {
       this.price = price
       this.index = index
-      console.log(this.index)
     },
     addCount () {
+      this.maxCount = this.info.stock_quantity
       this.count++
-      console.log(this.count)
+      if (this.count >= this.maxCount) {
+        this.count = this.maxCount
+        this.$toast(`最多购买${this.maxCount}件`)
+      }
     },
     decCount () {
       this.count--
       if (this.count < 1) {
         this.count = 1
       }
+    },
+    changeCount () {
+      this.maxCount = this.info.stock_quantity
+      let value = this.$refs.numberbox.value
+      this.count = value
+      if (this.count >= this.maxCount ) {
+        this.count = this.maxCount
+        this.$toast(`最多购买${this.maxCount}件`)
+      }
+      
+    },
+    // 加入购物车
+    addCart () {
+      console.log(this.count)
     }
+    
   },
   activated () {
     this.id = this.$route.params.id
@@ -156,6 +175,15 @@ export default {
     this.getDesc()
   },
   components: {
+  },
+  watch: {
+    // count (newC) {
+    //   console.log(this.count)
+    //   if (newC === 20) {
+    //     this.count = 20
+    //     this.$toast('最多购买20件')
+    //   }
+    // }
   }
 
 }
@@ -174,7 +202,9 @@ export default {
   .wrapper {
     position: absolute;
     top: 44px;
+    bottom: 0;
     overflow: scroll;
+    width: 100%;
     .swiper_wrapper {
       .mint-swipe {
         height: 5.333333rem;
@@ -251,6 +281,9 @@ export default {
           width: 100%;
           height: 100%;
           vertical-align: middle;
+        }
+        table {
+          width: 100%;
         }
       }
     }
