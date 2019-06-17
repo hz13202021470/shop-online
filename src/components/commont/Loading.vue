@@ -23,7 +23,7 @@ export default {
   top: 1.173333rem;
   left: 0;
   bottom: 1.466667rem;
-  z-index: 99;
+  z-index: 999;
   background: url(../../assets/images/lazy3.gif) no-repeat center;
   background-color: #fff;
 }

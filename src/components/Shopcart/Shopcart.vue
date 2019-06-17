@@ -1,3 +1,141 @@
 <template>
-<div>我是购物车</div>
+<div class="shop_cart">
+ <Header title="购物车"/>
+ <div class="shopcatr_wrapper">
+  <ul class="shopcart_list">
+    <li class=shopcatr_item v-for="(good, i) in cartInfo" :key="i">
+    <label 
+    @change="changSelected(good.id)" 
+     v-model="$store.getters.getGoodsSelected[good.id]">
+      <input type="checkbox" class="input" :checked="good.selected" />
+      <span></span>
+    </label>
+      <div class="top">
+        <img :src="good.img" alt="" class="img">
+        <div class="content">
+          <h1 class="title">{{good.title}}</h1>
+          <div class="package_wrapper">
+            <p class="package">套餐{{good.packageIndex}}</p>
+            <p class="stock_quantity">库存{{good.stockQuantity}}</p>
+          </div>
+          <p class="price">￥{{good.price}}</p>
+        </div>
+      </div>
+    </li>
+  </ul>
+      <div class="bottom">
+        <p>结算</p>
+      </div>
+ </div>
+ <BottomBar />
+</div>
 </template>
+
+<script>
+export default {
+  name: 'Shopcart',
+  data () {
+    return {
+      cartInfo: this.$store.state.selectGoods
+    }
+  },
+  methods: {
+    // 改变商品状态
+    changSelected (id, value) {
+      let selectedArr = this.$store.getters.getGoodsSelected[id]
+      this.$store.commit('updateGoodsSelected', {id, selected: !selectedArr})
+    },
+  },
+  created () {
+  }
+}
+</script>
+
+<style lang="less" scoped>
+.shop_cart {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  .shopcatr_wrapper {
+    position: absolute;
+    width: 100%;
+    overflow: scroll;
+    bottom: 1.466667rem;
+    top: 40px;
+    .shopcart_list {
+      padding: 0.266667rem;
+      .shopcatr_item {
+        font-size: 12px;
+        padding: 0.533333rem 0.266667rem;
+        box-shadow: 0 0 0.24rem #bbb;
+        margin-bottom: 0.266667rem;
+        border-radius: 0.266667rem;
+        display: flex;
+        // justify-content: space-between;
+        label {
+          display: inline-block;
+          height: 100%;
+          margin-right: 0.266667rem;
+          span {
+            display: inline-block;
+            background-color: #fff;
+            border-radius: 100%;
+            border: 1px solid #ccc;
+            position: relative;
+            width: 20px;
+            height: 20px;
+          }
+          span::after {
+            content: " ";
+            border: 2px solid transparent;
+            border-left: 0;
+            border-top: 0;
+            top: 3px;
+            left: 7px;
+            position: absolute;
+            width: 4px;
+            height: 8px;
+            transform: rotate(45deg) scale(0);
+            transition: transform .2s,-webkit-transform .2s;
+          }
+          input {
+           display: none;
+          }
+          input:checked + span{
+             background-color: #26a2ff;
+             border-color: #26a2ff;
+          }
+          input:checked + span::after {
+            border-color: #fff;
+            transform: rotate(45deg) scale(1);
+          }
+        }
+        .top {
+          display: flex;
+          .img {
+            height: 60px;
+            width: 60px;
+          }
+          .content {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            justify-content: space-between;;
+            padding-left: 0.266667rem;
+            .package_wrapper {
+              display: flex;
+              justify-content: space-between;
+            }
+            .title {
+            }
+            .price {
+              color: red;
+            }
+          }
+        }
+        .bottom {}
+      }
+    }
+  }
+}
+</style>

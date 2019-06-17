@@ -149,9 +149,9 @@ export default {
 .good_list {
   .goods {
     position: absolute;
-    top: 44px;
+    top: 1.173333rem;
     left: 0;
-    bottom: 0;
+    bottom: -0.266667rem;
     overflow: scroll;
     // touch-action: none;
   }
@@ -163,16 +163,17 @@ export default {
         padding: 0.266667rem;
         ul {
           .goods_item {
-            border: 1px solid #ccc;
             margin-bottom: 0.266667rem;
             padding-bottom: 0.32rem;
-            box-shadow: 0 0 0.08rem #ccc;
+            box-shadow: 0 0 0.266667rem #bbb;
+            border-radius: 0.266667rem;
             .goods_content {
               display: flex;
               justify-content: space-between;
               img {
                 height: 120px;
                 box-sizing: border-box;
+                border-top-left-radius: 0.266667rem;
               }
               .price_wrapper {
                 padding: 0 0.266667rem;

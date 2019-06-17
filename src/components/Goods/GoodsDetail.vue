@@ -1,6 +1,7 @@
 <template>
   <div class="goods_detail">
     <Header title="商品详情"/>
+   <Loading v-show = 'showLoading'/>
     <div class="wrapper">
       <div class="swiper_wrapper commont">
         <mt-swipe :auto="4000" :showIndicators="true">
@@ -37,43 +38,28 @@
       <span><mt-button  size="small" type="primary" @click.native="addShop">加入购物车</mt-button></span>
       <span><mt-button size="small" type="primary">立即购买</mt-button></span>
     </div>
-    <transition name="cart" mode="in-out">
-      <div class="shopcart_wrapper"  v-if="showShopCart">
-        <div class="cover_bg" @click="closeBg"></div>
-        <div class="content">
-          <div class="package_wrapper">
-            <div class="title_wrapper">
-              <h1 class="title">套餐类型</h1>
-              <span @click="closeBg">关闭</span>
-            </div>
-            <ul class="package">
-              <li class="item" :class="{'current':index === 1}" @click="addPrice(130, 1)">套餐一</li>
-              <li class="item" :class="{'current':index === 2}" @click="addPrice(250, 2)">套餐三</li>
-              <li class="item" :class="{'current':index === 3}" @click="addPrice(300, 3)">套餐二</li>
-            </ul>
-          </div>
-          <div class="add_cart">
-            <label class="text">购买数量</label>
-            <div class="num">
-              <button class="decrease" :class="{'decrease_off': this.count === 1}" @click="decCount">-</button>
-              <input :value="count" type="number" @change="changeCount" ref="numberbox">
-              <button class="increase" @click="addCount">+</button>
-            </div>
-          </div>
-          <div class="totla_price">
-           <span>价格：</span>
-           <span v-show="this.price">{{info.sell_price + this.price}} 元</span>
-          </div>
-          <div class="footer">
-           <mt-button size="large" type="danger" @click="addCart">确认</mt-button>
-          </div>
-        </div>
-      </div>
-    </transition>
+     <transition name="cart" mode="in-out">
+        <AddShopCart :id="parseInt(id)"
+        :maxCount="info.stock_quantity"
+        :totalCount="totalCount"
+        :sellPrice="info.sell_price"
+        :packageIndex="packageIndex"
+        :price="price"
+        :title="info.title"
+        @selectPackage="selectPackage"
+        @closeCart="closeCart"
+        @addTotalCount="addTotalCount"
+        @descTotalCount="descTotalCount"
+        @changeTotalCount="changeTotalCount"
+        @changePrice="changePrice"
+        @addCart="addCart"
+        v-if="showShopCart"/>
+     </transition>
   </div>
 </template>
 
 <script>
+import AddShopCart from '../commont/AddShopCart.vue'
 export default {
   name: 'goodsDetail',
   data () {
@@ -83,44 +69,43 @@ export default {
       info: {}, // 商品信息
       desc: {}, // 图文信息
       showShopCart: false, // 控制购物车显示、隐藏
+      totalCount: 1, // 总数量
+      packageIndex: 0, // 套餐类型
+      maxCount: 0, // 最多选择数量
       price: 0,
-      count: 1, // 默认数量为1
-      index: 0,
-      maxCount: 0 // 最多选择数量
+      showLoading: false
     }
   },
   methods: {
-    // 获取轮播图
     getImg () {
-      this.$axios.get('getthumimages/' + this.id).then((res) => {
-        let data = res.data
-        if (data.status === 0) {
-          this.imgs = data.message
-        }
-      }).catch((err) => {
-        this.$toast('获取数据失败' + err)
-      })
+      return this.$axios.get('getthumimages/' + this.id)
     },
-    // 获取价格信息
     getInfo () {
-      this.$axios.get('goods/getinfo/' + this.id).then((res) => {
-        let data = res.data
-        if (data.status === 0) {
-          this.info = data.message[0]
-        }
-      }).catch(err => {
-        this.$toast('获取商品的信息异常' + err)
-      })
+      return this.$axios.get('goods/getinfo/' + this.id)
     },
     // 获取图文介绍
     getDesc () {
-      this.$axios.get('goods/getdesc/' + this.id).then((res) => {
-        let data = res.data
-        if (data.status === 0) {
-          this.desc = data.message[0]
+      return this.$axios.get('goods/getdesc/' + this.id)
+    },
+    axiosAll () {
+      this.showLoading = true
+      this.$axios.all([this.getImg(), this.getInfo(), this.getDesc()]).then(this.$axios.spread((getImg, getInfo, getDesc) => {
+        let imgData = getImg.data
+        let infoData = getInfo.data
+        let descData = getDesc.data
+        if (imgData.status === 0) {
+          this.imgs = imgData.message
         }
-      }).catch((err) => {
-        this.$toast('获取图文信息异常' + err)
+        if (infoData.status === 0) {
+          this.info = infoData.message[0]
+        }
+        if (descData.status === 0) {
+          this.desc = descData.message[0]
+        }
+        this.showLoading = false
+      })).catch((err) => {
+        this.showLoading = false
+        this.$toast('获取商品的信息异常' + err)
       })
     },
     // 加入购物车
@@ -128,53 +113,61 @@ export default {
       this.showShopCart = true
       this.forbidScroll() // 禁止弹出框滑动
     },
+    // 选择套餐
+    selectPackage (index) {
+      this.packageIndex = index
+    },
     // 关闭购物车
-    closeBg () {
-      this.showShopCart = false
-      this.canScroll() // 允许弹出框滑动
+    closeCart (status) {
+      this.showShopCart = status
     },
-    // 套餐选择
-    addPrice (price, index) {
-      this.price = price
-      this.index = index
-    },
-    addCount () {
-      this.maxCount = this.info.stock_quantity
-      this.count++
-      if (this.count >= this.maxCount) {
-        this.count = this.maxCount
-        this.$toast(`最多购买${this.maxCount}件`)
+    // 增加数量
+    addTotalCount (status) {
+      this.totalCount++
+      if (status) {
+        this.totalCount = status
       }
     },
-    decCount () {
-      this.count--
-      if (this.count < 1) {
-        this.count = 1
+    // 减少数量
+    descTotalCount (status) {
+      this.totalCount--
+      if (status) {
+        this.totalCount = status
+      }
+      if (this.totalCount < 1) {
+        this.totalCount = 1
       }
     },
-    changeCount () {
-      this.maxCount = this.info.stock_quantity
-      let value = this.$refs.numberbox.value
-      this.count = value
-      if (this.count >= this.maxCount ) {
-        this.count = this.maxCount
-        this.$toast(`最多购买${this.maxCount}件`)
-      }
-      
+    // 改变数量
+    changeTotalCount (status) {
+      this.totalCount = status
     },
-    // 加入购物车
+    changePrice (status) {
+      this.price = status
+    },
     addCart () {
-      console.log(this.count)
+      let goodInfo = {
+        id: parseInt(this.id),
+        title: this.info.title,
+        stockQuantity: this.info.stock_quantity,
+        totalCount: this.totalCount,
+        price: this.price + this.info.sell_price,
+        packageIndex: this.packageIndex,
+        img: this.imgs[0].src,
+        selected: true
+      }
+      this.$store.commit('addSelectGood', goodInfo)
+      this.showShopCart = false
+      this.selectPackage(0)
+      // this.$toast('加入购物车成功')
     }
-    
   },
   activated () {
     this.id = this.$route.params.id
-    this.getImg()
-    this.getInfo()
-    this.getDesc()
+    this.axiosAll()
   },
   components: {
+    AddShopCart
   },
   watch: {
     // count (newC) {
@@ -191,6 +184,13 @@ export default {
 
 <style lang="less">
 .goods_detail {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-color: #eee;
   font-size: 17px;
   .commont {
@@ -205,6 +205,7 @@ export default {
     bottom: 0;
     overflow: scroll;
     width: 100%;
+    height: 100%;
     .swiper_wrapper {
       .mint-swipe {
         height: 5.333333rem;
@@ -300,102 +301,6 @@ export default {
     background-color: #fff;
     .b_item {
       // display: inline-block;
-    }
-  }
-  .shopcart_wrapper {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    color: #051b28;
-      z-index: 999;
-    .cover_bg {
-      background-color: rgba(0, 0, 0, .7);
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-    }
-    .content {
-      position: absolute;
-      top: 20%;
-      left: 0;
-      bottom:0;
-      right: 0;
-      font-size: 14px;
-      background-color: #fff;
-      padding: 0.266667rem;
-      z-index: 199;
-      .title_wrapper {
-        display: flex;
-        justify-content: space-between;
-        margin: 0.266667rem 0;
-      }
-      .package_wrapper {
-        border-bottom: 1px solid rgba(0, 0, 0, .1);
-        padding-bottom: 0.266667rem;
-        .package {
-          display: flex;
-          justify-content: space-between;
-          font-size: 12px;
-          .item {
-            border: 1px solid red;
-            padding: 0 10px;
-            line-height: 26px;
-            border-radius: 0.266667rem;
-            &.current {
-              background-color: red;
-              color: #fff;
-            }
-          }
-        }
-      }
-      .add_cart {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 0.533333rem;
-        .num {
-          height: 0.96rem;
-          width: 2.666667rem;
-          button {
-            width: 0.8rem;
-            height: 0.906667rem;
-            border: 1px solid #f5f5f5f5;
-            background-color: #f5f5f5f5;
-            font-size: 24px;
-            vertical-align: middle;
-          }
-          input {
-            width: 0.8rem;
-            height: 0.906667rem;
-            line-height: 0.906667rem;
-            border: 1px solid #f5f5f5f5;
-            background-color: #f5f5f5f5;
-            font-size: 14px;
-            box-sizing: border-box;
-            text-align: center;
-            vertical-align: middle;
-          }
-          .decrease {
-            border-right: 1px solid #fff;
-            &.decrease_off {
-              color: #ccc;
-              background-color: #fbfbfb;
-            }
-          }
-          .increase {
-            border-left: 1px solid #fff;
-          }
-        }
-      }
-      .footer {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-      }
     }
   }
   // 购物车动画

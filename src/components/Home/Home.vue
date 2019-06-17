@@ -85,6 +85,7 @@ export default {
   .home {
     position: absolute;
     height: 100%;
+    width: 100%;
     .lunbotu {
       .mint-swipe {
         height: 29.9985vh;

@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/components/Home/Home'
-import Member from '@/components/Member/Member'
-import Shopcart from '@/components/Shopcart/Shopcart'
-import Search from '@/components/Search/Search'
+import Home from '@/components/home/Home'
+import Member from '@/components/member/Member'
+import Shopcart from '@/components/shopcart/Shopcart'
+import Search from '@/components/search/Search'
 
 Vue.use(Router)
 
@@ -39,37 +39,37 @@ export default new Router({
     {
       path: '/home/newslist',
       name: 'newslist',
-      component: resolve => require(['@/components/News/NewsList'], resolve)
+      component: resolve => require(['@/components/news/NewsList'], resolve)
     },
     // 新闻详情
     {
       path: '/home/newsdetail/:id',
       name: 'newsdetail',
-      component: resolve => require(['@/components/News/NewsDetail'], resolve)
+      component: resolve => require(['@/components/news/NewsDetail'], resolve)
     },
     // 图文分享
     {
       name: 'photolist',
       path: '/home/photolist',
-      component: resolve => require(['@/components/Photo/PhotoList'], resolve)
+      component: resolve => require(['@/components/photo/PhotoList'], resolve)
     },
     // 图文详情
     {
       name: 'photodetail',
       path: '/home/photodetail/:id',
-      component: resolve => require(['@/components/Photo/PhotoDetail'], resolve)
+      component: resolve => require(['@/components/photo/PhotoDetail'], resolve)
     },
     // 商品列表
     {
       name: 'goodlist',
       path: '/home/goodslist',
-      component: resolve => require(['@/components/Goods/GoodsList'], resolve)
+      component: resolve => require(['@/components/goods/GoodsList'], resolve)
     },
     // 商品详情
     {
       name: 'goodsDetail',
       path: '/goodslist/goodsdetail/:id',
-      component: resolve => require(['@/components/Goods/GoodsDetail'], resolve)
+      component: resolve => require(['@/components/goods/GoodsDetail'], resolve)
     }
   ]
 })
