@@ -34,8 +34,35 @@ export default new Vuex.Store({
         }
       })
       localStorage.setItem('selectGoods', JSON.stringify(state.selectGoods))
-    }
+    },
+    //增加购物车中商品的数量的值
+    addGoodTotalCount (state, goodId) {
+      state.selectGoods.some(good => {
+        if (good.id === goodId) {
+          good.totalCount++
+        }
+      })
+      localStorage.setItem('selectGoods', JSON.stringify(state.selectGoods))
+    },
+    //减少购物车中商品的数量的值
+    descGoodTotalCount (state, goodId) {
+      state.selectGoods.some(good => {
+        if (good.id === goodId) {
+          good.totalCount--
+        }
+      })
+      localStorage.setItem('selectGoods', JSON.stringify(state.selectGoods))
+    },
+    //修改购物车中商品的数量的值
+    changeGoodTotalCount (state, goodInfo) {
+      state.selectGoods.some(good => {
+        if (good.id === goodInfo.id) {
+          good.totalCount = goodInfo.totalCount
+        }
+      })
 
+      localStorage.setItem('selectGoods', JSON.stringify(state.selectGoods))
+    }
   },
   actions: {
 

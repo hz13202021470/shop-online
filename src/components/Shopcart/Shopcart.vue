@@ -4,10 +4,8 @@
  <div class="shopcatr_wrapper">
   <ul class="shopcart_list">
     <li class=shopcatr_item v-for="(good, i) in cartInfo" :key="i">
-    <label 
-    @change="changSelected(good.id)" 
-     v-model="$store.getters.getGoodsSelected[good.id]">
-      <input type="checkbox" class="input" :checked="good.selected" />
+    <label @change="changSelected(good.id)">
+      <input type="checkbox" class="input" :checked="$store.getters.getGoodsSelected[good.id]"/>
       <span></span>
     </label>
       <div class="top">
@@ -18,7 +16,16 @@
             <p class="package">套餐{{good.packageIndex}}</p>
             <p class="stock_quantity">库存{{good.stockQuantity}}</p>
           </div>
-          <p class="price">￥{{good.price}}</p>
+          <div class="price">
+           <p>￥{{good.price}}</p>
+           <div class="number">
+            <Numbox :id="good.id" :totalCount="good.totalCount"
+                    @addTotalCount="addTotalCount(good.id)"
+                    @descTotalCount="descTotalCount(good.id)"
+                    @changeTotalCount="changeTotalCount"
+            />
+          </div>
+        </div>
         </div>
       </div>
     </li>
@@ -32,6 +39,7 @@
 </template>
 
 <script>
+import Numbox from '../commont/Numbox.vue'
 export default {
   name: 'Shopcart',
   data () {
@@ -41,12 +49,26 @@ export default {
   },
   methods: {
     // 改变商品状态
-    changSelected (id, value) {
-      let selectedArr = this.$store.getters.getGoodsSelected[id]
-      this.$store.commit('updateGoodsSelected', {id, selected: !selectedArr})
+    changSelected (id) {
+      let selected = this.$store.getters.getGoodsSelected[id]
+      this.$store.commit('updateGoodsSelected', { id, selected: !selected })
     },
+    addTotalCount (id) {
+      this.$store.commit('addGoodTotalCount', id)
+    },
+    descTotalCount (id) {
+      this.$store.commit('descGoodTotalCount', id)
+    },
+    changeTotalCount (id, totalCount) {
+      // id, totalCount 都是Numbox组件传过来的
+      // 因为mutations 不接受多个参数，只能把参数写成对象
+      this.$store.commit('changeGoodTotalCount', { id: id, totalCount: totalCount })
+    }
   },
   created () {
+  },
+  components: {
+    Numbox
   }
 }
 </script>
@@ -65,12 +87,13 @@ export default {
     .shopcart_list {
       padding: 0.266667rem;
       .shopcatr_item {
+        display: flex;
+        line-height: 0.533333rem;
         font-size: 12px;
         padding: 0.533333rem 0.266667rem;
         box-shadow: 0 0 0.24rem #bbb;
         margin-bottom: 0.266667rem;
         border-radius: 0.266667rem;
-        display: flex;
         // justify-content: space-between;
         label {
           display: inline-block;
@@ -112,11 +135,13 @@ export default {
         }
         .top {
           display: flex;
+          width: 100%;
           .img {
             height: 60px;
             width: 60px;
           }
           .content {
+            width: 100%;
             display: flex;
             flex: 1;
             flex-direction: column;
@@ -125,11 +150,22 @@ export default {
             .package_wrapper {
               display: flex;
               justify-content: space-between;
+              margin: 0.133333rem 0;
+              font-size: 13px;
             }
             .title {
+              font-size: 14px;
             }
             .price {
               color: red;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              font-size: 16px;
+              font-weight: 700;
+              .number {
+                margin-top: 0.266667rem;
+              }
             }
           }
         }

@@ -16,10 +16,17 @@
           </div>
           <div class="add_cart">
             <label class="text">购买数量</label>
-            <div class="num">
+      <!--       <div class="num">
               <button class="decrease" :class="{'decrease_off': this.totalCount === 1}" @click="descTotalCount">-</button>
               <input :value="totalCount" type="number" @change="changeTotalCount" ref="numberbox">
               <button class="increase" @click="addTotalCount">+</button>
+            </div> -->
+            <div class="number">
+              <Numbox :id="id" :totalCount="totalCount"
+                      @addTotalCount="addTotalCount"
+                      @descTotalCount="descTotalCount"
+                      @changeTotalCount="changeTotalCount"
+              />
             </div>
           </div>
           <div class="totla_price">
@@ -34,8 +41,9 @@
 </template>
 
 <script>
+import Numbox from './Numbox.vue'
 export default {
-  name: 'NumberBox',
+  name: 'AddShopCart',
   data () {
     return {
     }
@@ -61,10 +69,8 @@ export default {
     descTotalCount () {
       this.$emit('descTotalCount')
     },
-    changeTotalCount () {
-      let value = this.$refs.numberbox.value
-      console.log(value)
-      this.$emit('changeTotalCount', parseInt(value))
+    changeTotalCount (value) {
+      this.$emit('changeTotalCount', value)
       if (value >= this.maxCount) {
         this.$emit('changeTotalCount', this.maxCount)
         this.$toast(`最多购买${this.maxCount}件`)
@@ -106,6 +112,9 @@ export default {
     title: {
       type: String
     }
+  },
+  components: {
+    Numbox
   }
 }
 </script>

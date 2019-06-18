@@ -123,6 +123,7 @@ export default {
     },
     // 增加数量
     addTotalCount (status) {
+      console.log("GoodsDetail.vue")
       this.totalCount++
       if (status) {
         this.totalCount = status
