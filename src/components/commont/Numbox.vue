@@ -1,7 +1,7 @@
 <template>
   <div class="num">
     <button class="decrease" :class="{'decrease_off': this.totalCount === 1}" @click="descTotalCount">-</button>
-    <input :value="totalCount" type="number" @change="changeTotalCount" ref="numberbox">
+    <input  type="number" :disabled="this.totalCount == this.maxCount"  :value="this.totalCount" @change="changeTotalCount" ref="numberbox" >
     <button class="increase" @click="addTotalCount">+</button>
   </div>
 </template>
@@ -10,22 +10,35 @@
 export default {
   name: 'Numbox',
   data () {
-    return {}
+    return {
+    }
   },
   methods: {
     descTotalCount () {
-      this.$emit('descTotalCount')
+      if (this.totalCount > 1) {
+        this.$emit('descTotalCount')
+      }
     },
     addTotalCount () {
-      this.$emit('addTotalCount')
+       if (this.totalCount >= this.maxCount) {
+        this.$toast(`最多购买${this.maxCount}件`)
+      } else {
+        this.$emit('addTotalCount')
+      }
     },
     changeTotalCount () {
       let value = this.$refs.numberbox.value
       let id = this.id
-      this.$emit('changeTotalCount', id, parseInt(value))
+      let preTotalCount = this.totalCount
+       if (value > this.maxCount) {
+        this.$emit('changeTotalCount', id, parseInt(this.maxCount))
+        this.$toast(`最多购买${this.maxCount}件`)
+      } else {
+        this.$emit('changeTotalCount', id, parseInt(value))
+     }
     }
   },
-  props: ['id', 'totalCount']
+  props: ['id', 'totalCount', 'maxCount']
 }
 </script>
 

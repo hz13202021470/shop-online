@@ -19,7 +19,9 @@
           <div class="price">
            <p>￥{{good.price}}</p>
            <div class="number">
-            <Numbox :id="good.id" :totalCount="good.totalCount"
+            <Numbox :id="good.id" 
+                    :totalCount="good.totalCount"
+                    :maxCount = "good.stockQuantity"
                     @addTotalCount="addTotalCount(good.id)"
                     @descTotalCount="descTotalCount(good.id)"
                     @changeTotalCount="changeTotalCount"
@@ -31,7 +33,7 @@
     </li>
   </ul>
       <div class="bottom">
-        <p>结算</p>
+        <p>结算：{{$store.getters.getTotalPrice}}</p>
       </div>
  </div>
  <BottomBar />

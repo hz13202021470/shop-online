@@ -43,7 +43,7 @@
         :maxCount="info.stock_quantity"
         :totalCount="totalCount"
         :sellPrice="info.sell_price"
-        :packageIndex="packageIndex"
+        :packageIndex="this.packageIndex"
         :price="price"
         :title="info.title"
         @selectPackage="selectPackage"
@@ -71,7 +71,6 @@ export default {
       showShopCart: false, // 控制购物车显示、隐藏
       totalCount: 1, // 总数量
       packageIndex: 0, // 套餐类型
-      maxCount: 0, // 最多选择数量
       price: 0,
       showLoading: false
     }
@@ -122,26 +121,16 @@ export default {
       this.showShopCart = status
     },
     // 增加数量
-    addTotalCount (status) {
-      console.log("GoodsDetail.vue")
+    addTotalCount () {
       this.totalCount++
-      if (status) {
-        this.totalCount = status
-      }
     },
     // 减少数量
     descTotalCount (status) {
       this.totalCount--
-      if (status) {
-        this.totalCount = status
-      }
-      if (this.totalCount < 1) {
-        this.totalCount = 1
-      }
     },
     // 改变数量
-    changeTotalCount (status) {
-      this.totalCount = status
+    changeTotalCount (value) {
+      this.totalCount = parseInt(value)
     },
     changePrice (status) {
       this.price = status
@@ -160,7 +149,6 @@ export default {
       this.$store.commit('addSelectGood', goodInfo)
       this.showShopCart = false
       this.selectPackage(0)
-      // this.$toast('加入购物车成功')
     }
   },
   activated () {

@@ -16,13 +16,9 @@
           </div>
           <div class="add_cart">
             <label class="text">购买数量</label>
-      <!--       <div class="num">
-              <button class="decrease" :class="{'decrease_off': this.totalCount === 1}" @click="descTotalCount">-</button>
-              <input :value="totalCount" type="number" @change="changeTotalCount" ref="numberbox">
-              <button class="increase" @click="addTotalCount">+</button>
-            </div> -->
             <div class="number">
               <Numbox :id="id" :totalCount="totalCount"
+                      :maxCount="maxCount"
                       @addTotalCount="addTotalCount"
                       @descTotalCount="descTotalCount"
                       @changeTotalCount="changeTotalCount"
@@ -61,25 +57,23 @@ export default {
     },
     addTotalCount () {
       this.$emit('addTotalCount')
-      if (this.totalCount >= this.maxCount) {
-        this.$emit('addTotalCount', this.maxCount)
-        this.$toast(`最多购买${this.maxCount}件`)
-      }
     },
     descTotalCount () {
       this.$emit('descTotalCount')
     },
-    changeTotalCount (value) {
-      this.$emit('changeTotalCount', value)
-      if (value >= this.maxCount) {
-        this.$emit('changeTotalCount', this.maxCount)
-        this.$toast(`最多购买${this.maxCount}件`)
-      }
+    changeTotalCount (id, value) {
+        this.$emit('changeTotalCount', value)
     },
     // 加入购物车
     addCart () {
-      this.$emit('addCart')
-      this.$toast('加入购物车成功')
+      console.log(this.totalCount)
+      console.log(this.maxCount)
+      if (this.totalCount > this.maxCount) {
+        this.$toast('超过数量')
+      } else {
+        this.$emit('addCart')
+        this.$toast('加入购物车成功')
+      }
     }
   },
   props: {
@@ -91,12 +85,10 @@ export default {
       default: 1
     },
     totalCount: {
-      type: Number,
-      default: 0
+      type: Number
     },
     maxCount: {
-      type: Number,
-      default: 0
+      type: Number
     },
     packageIndex: {
       type: Number,

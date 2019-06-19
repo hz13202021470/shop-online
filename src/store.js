@@ -75,6 +75,16 @@ export default new Vuex.Store({
         o[good.id] = good.selected
       })
       return o
+    },
+    // 计算总价格
+    getTotalPrice (state) {
+      let totalPrice = 0
+      state.selectGoods.forEach(good => {
+        if (good.selected) {
+          totalPrice += good.price * good.totalCount
+        }
+      })
+      return totalPrice
     }
   }
 })
