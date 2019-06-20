@@ -9,7 +9,7 @@
           <span class="time">发表时间：{{photodetail.add_time | covertTime("YYYY-MM-DD")}}</span>
           <span class="click">点击次数：{{photodetail.click}}</span>
         </div>
-        <div class="img">
+        <div class="img" @click="forbid">
           <vue-preview
             :list="img"
             :tapToClose='true'
@@ -17,7 +17,7 @@
             :previewBoxStyle="{display: 'flex', 'flex-wrap': 'wrap'}"
           />
         </div>
-        <div class="text" @click="click1">{{photodetail.content}}</div>
+        <div class="text" >{{photodetail.content}}</div>
         <Comment :id="id" ref="comment"/>
       </div>
   </div>
@@ -40,9 +40,13 @@ export default {
   computed: {
   },
   methods: {
+    forbid () {
+      console.log(this.Scroll.disable())
+    },
     // 获取详情数据
     getPhotoDetial () {
-      this.$axios.get('getimageInfo/' + this.id).then(res => {
+      let id = this.$route.params.id
+      this.$axios.get('getimageInfo/' + id).then(res => {
         let data = res.data
         if (data.status === 0) {
           this.photodetail = data.message[0]
@@ -66,7 +70,8 @@ export default {
     },
     // 获取图片缩略图
     getImage () {
-      this.$axios.get('getthumimages/' + this.id).then(res => {
+      let id = this.$route.params.id
+      this.$axios.get('getthumimages/' + id).then(res => {
         let data = res.data
         if (data.status === 0) {
           data.message.map(item => {
@@ -78,9 +83,6 @@ export default {
       }).catch(err => {
         Toast('获取图片缩略图异常' + err)
       })
-    },
-    click1 () {
-      this.$refs['comment'].show()
     }
 
   },
@@ -90,7 +92,6 @@ export default {
     this.getImage()
   },
   deactivated () {
-    this.img = []
   },
   created () {
   },

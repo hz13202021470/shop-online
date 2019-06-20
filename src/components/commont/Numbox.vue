@@ -20,7 +20,7 @@ export default {
       }
     },
     addTotalCount () {
-       if (this.totalCount >= this.maxCount) {
+      if (this.totalCount >= this.maxCount) {
         this.$toast(`最多购买${this.maxCount}件`)
       } else {
         this.$emit('addTotalCount')
@@ -29,13 +29,12 @@ export default {
     changeTotalCount () {
       let value = this.$refs.numberbox.value
       let id = this.id
-      let preTotalCount = this.totalCount
-       if (value > this.maxCount) {
+      if (value > this.maxCount) {
         this.$emit('changeTotalCount', id, parseInt(this.maxCount))
         this.$toast(`最多购买${this.maxCount}件`)
       } else {
         this.$emit('changeTotalCount', id, parseInt(value))
-     }
+      }
     }
   },
   props: ['id', 'totalCount', 'maxCount']

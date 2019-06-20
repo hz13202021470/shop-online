@@ -1,39 +1,41 @@
 <template>
+    <transition name="cart" mode="in-out">
       <div class="shopcart_wrapper" >
-        <div class="cover_bg" @click="closeBg"></div>
-        <div class="content">
-          <div class="package_wrapper">
-            <h1 class="title">{{this.title}}</h1>
-            <div class="type_wrapper">
-              <h2 class="type">套餐类型</h2>
-              <span @click="closeBg">关闭</span>
+         <div class="cover_bg" @click="closeBg"></div>
+          <div class="content">
+            <div class="package_wrapper">
+              <h1 class="title">{{this.title}}</h1>
+              <div class="type_wrapper">
+                <h2 class="type">套餐类型</h2>
+                <span @click="closeBg">关闭</span>
+              </div>
+              <ul class="package">
+                <li class="item" :class="{'current':packageIndex === 1}" @click="addPrice(130, 1)">套餐一</li>
+                <li class="item" :class="{'current':packageIndex === 2}" @click="addPrice(250, 2)">套餐二</li>
+                <li class="item" :class="{'current':packageIndex === 3}" @click="addPrice(300, 3)">套餐三</li>
+              </ul>
             </div>
-            <ul class="package">
-              <li class="item" :class="{'current':packageIndex === 1}" @click="addPrice(130, 1)">套餐一</li>
-              <li class="item" :class="{'current':packageIndex === 2}" @click="addPrice(250, 2)">套餐二</li>
-              <li class="item" :class="{'current':packageIndex === 3}" @click="addPrice(300, 3)">套餐三</li>
-            </ul>
-          </div>
-          <div class="add_cart">
-            <label class="text">购买数量</label>
-            <div class="number">
-              <Numbox :id="id" :totalCount="totalCount"
-                      :maxCount="maxCount"
-                      @addTotalCount="addTotalCount"
-                      @descTotalCount="descTotalCount"
-                      @changeTotalCount="changeTotalCount"
-              />
+            <div class="add_cart">
+              <label class="text">购买数量</label>
+              <div class="number">
+                <Numbox :id="id" :totalCount="totalCount"
+                        :maxCount="maxCount"
+                        @addTotalCount="addTotalCount"
+                        @descTotalCount="descTotalCount"
+                        @changeTotalCount="changeTotalCount"
+                />
+              </div>
+            </div>
+            <div class="totla_price">
+             <span>价格：</span>
+             <span v-show="this.price">{{sellPrice + price}} 元</span>
+            </div>
+            <div class="footer">
+               <mt-button size="large" type="danger" @click="addCart" :disabled="this.packageIndex <= 0">确认</mt-button>
             </div>
           </div>
-          <div class="totla_price">
-           <span>价格：</span>
-           <span v-show="this.price">{{sellPrice + price}} 元</span>
-          </div>
-          <div class="footer">
-             <mt-button size="large" type="danger" @click="addCart" :disabled="this.packageIndex <= 0">确认</mt-button>
-          </div>
-        </div>
       </div>
+     </transition>
 </template>
 
 <script>
@@ -62,7 +64,7 @@ export default {
       this.$emit('descTotalCount')
     },
     changeTotalCount (id, value) {
-        this.$emit('changeTotalCount', value)
+      this.$emit('changeTotalCount', value)
     },
     // 加入购物车
     addCart () {
@@ -112,6 +114,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.cart-enter-active, .cart-leave-active {
+  transition: all .5s;
+}
+.cart-enter, .cart-leave-to {
+  transform: translateY(100%);
+}
  .shopcart_wrapper {
     width: 100%;
     height: 100%;
@@ -119,7 +127,13 @@ export default {
     bottom: 0;
     left: 0;
     color: #051b28;
-      z-index: 999;
+    z-index: 999;
+    .closeBg-enter-active, .closeBg-leave-active {
+      transition: opacity .3s;
+    }
+    .closeBg-enter, .closeBg-leave-to {
+      opacity: 1;
+    }
     .cover_bg {
       background-color: rgba(0, 0, 0, .7);
       position: absolute;

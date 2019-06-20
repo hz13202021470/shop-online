@@ -38,7 +38,7 @@
       <span><mt-button  size="small" type="primary" @click.native="addShop">加入购物车</mt-button></span>
       <span><mt-button size="small" type="primary">立即购买</mt-button></span>
     </div>
-     <transition name="cart" mode="in-out">
+      <div>
         <AddShopCart :id="parseInt(id)"
         :maxCount="info.stock_quantity"
         :totalCount="totalCount"
@@ -53,8 +53,8 @@
         @changeTotalCount="changeTotalCount"
         @changePrice="changePrice"
         @addCart="addCart"
-        v-if="showShopCart"/>
-     </transition>
+        v-show="showShopCart"/>
+      </div>
   </div>
 </template>
 
@@ -293,12 +293,12 @@ export default {
     }
   }
   // 购物车动画
-  .cart-enter-active, .cart-leave-active {
-    transition: all .3s;
-  }
-  .cart-enter, .cart-leave-to {
-    transform: translateY(100%);
-    opacity: 0;
-  }
+  // .cart-enter-active, .cart-leave-active {
+  //   transition: all .3s;
+  // }
+  // .cart-enter, .cart-leave-to {
+  //   transform: translateY(100%);
+  //   opacity: 0;
+  // }
 }
 </style>

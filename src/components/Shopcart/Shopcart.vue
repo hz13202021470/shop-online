@@ -19,7 +19,7 @@
           <div class="price">
            <p>￥{{good.price}}</p>
            <div class="number">
-            <Numbox :id="good.id" 
+            <Numbox :id="good.id"
                     :totalCount="good.totalCount"
                     :maxCount = "good.stockQuantity"
                     @addTotalCount="addTotalCount(good.id)"
@@ -32,11 +32,12 @@
       </div>
     </li>
   </ul>
-      <div class="bottom">
-        <p>结算：{{$store.getters.getTotalPrice}}</p>
-      </div>
  </div>
  <BottomBar />
+ <div class="shopcatr_bottom">
+      <span>占位符</span>
+      <span>合计：￥{{$store.getters.getTotalPrice}}</span>
+  </div>
 </div>
 </template>
 
@@ -171,9 +172,21 @@ export default {
             }
           }
         }
-        .bottom {}
       }
     }
+  }
+.shopcatr_bottom {
+  position: absolute;
+  bottom: 55px;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #fff;
+  border-bottom: 1px solid #ccc;
+  font-size: 16px;
   }
 }
 </style>

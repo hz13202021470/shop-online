@@ -38,6 +38,7 @@ import { Toast } from 'mint-ui'
 export default {
   data () {
     return {
+      id: this.$route.params.id,
       pageindex: 1, // 默认显示的评论页
       comments: [], // 评论数组
       msg: '', // 评论内容
@@ -52,7 +53,7 @@ export default {
   methods: {
     // 获取评论数据
     getComments () {
-      this.$axios.get(`getcomments/${this.id}?pageindex=${this.pageindex}`).then(res => {
+      this.$axios.get(`getcomments/${this.cId}?pageindex=${this.pageindex}`).then(res => {
         let data = res.data
         if (data.message.length === 0) {
           this.allLoaded = true
@@ -72,7 +73,7 @@ export default {
       if (this.msg.trim().length === 0) {
         return Toast('评论内容不能为空')
       }
-      this.$axios.post('postcomment/' + this.id, {
+      this.$axios.post('postcomment/' + this.cId, {
         content: this.msg.trim()
       }).then(res => {
         console.log(res)
@@ -99,13 +100,16 @@ export default {
     }
   },
   activated () {
-    this.id = this.$route.params.id
+    console.log(this.pageindex)
+    this.cId = this.$route.params.id
     this.getComments()
+  },
+  deactivated () {
+    this.pageindex = 1
   },
   mounted () {
     // this.getComments()
   },
-  props: ['id'],
   watch: {
     bottomStatus (val) {
       switch (val) {
